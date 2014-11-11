@@ -60,14 +60,15 @@ public void onModuleLoad() {
 }
 
 /**
- * Add stock to FlexTable. Executed when the user clicks the addStockButton or
- * presses enter in the newSymbolTextBox.
+ * Speichert eingegebenen Text als String
+ * 
  */
 private void sendtext() {
     final String text = newTextArea.getText();
     newTextArea.setFocus(true);
+    
+    System.out.print(text);
 }
 
 
-	
 }

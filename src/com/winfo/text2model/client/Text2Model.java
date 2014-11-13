@@ -26,6 +26,7 @@ public class Text2Model implements EntryPoint {
 /**  * Entry point method.  */  
 public void onModuleLoad() {
 	
+	
     // Assemble send panel.
     addPanel.add(newTextArea);
     addPanel.add(sendButton);

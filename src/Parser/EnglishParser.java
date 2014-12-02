@@ -34,10 +34,8 @@ public class EnglishParser extends SyntaxParser {
 	@Override
 	void printWordsAndPosTags(String str) {
 		EnglishParser parser = new EnglishParser();
-        Tree tree = parser.parse(str);  
-
+        Tree tree = parser.parse(str);
         List<Tree> leaves = tree.getLeaves();
-        // Print words and Pos Tags
         for (Tree leaf : leaves) { 
             Tree parent = leaf.parent(tree);
             System.out.print(leaf.label().value() + "-" + parent.label().value() + " ");

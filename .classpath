@@ -5,5 +5,11 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-parser-full-2014-10-31/ejml-0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-parser-full-2014-10-31/stanford-parser.jar"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-parser-full-2014-10-31/stanford-parser-3.5.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-parser-full-2014-10-31/stanford-parser-3.5.0-models.jar"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-parser-full-2014-10-31/stanford-parser-3.5.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Programmierung/stanford-postagger-full-2012-03-09/stanford-postagger.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

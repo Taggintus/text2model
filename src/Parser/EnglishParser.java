@@ -32,7 +32,7 @@ public class EnglishParser extends SyntaxParser {
     }
 
 	@Override
-	void printWordsAndPosTags(String str) {
+	void printWordsAndPOSTags(String str) {
 		EnglishParser parser = new EnglishParser();
         Tree tree = parser.parse(str);
         List<Tree> leaves = tree.getLeaves();

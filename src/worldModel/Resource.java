@@ -5,12 +5,12 @@
  * 10785 Berlin
  * Germany
  */
-package com.inubit.research.textToProcess.worldModel;
+package worldModel;
 
 import java.util.List;
 
-import com.inubit.research.textToProcess.text.T2PSentence;
-import com.inubit.research.textToProcess.worldModel.Specifier.SpecifierType;
+import text.T2PSentence;
+import worldModel.Specifier.SpecifierType;
 
 /**
  * data object or object of an action, the outcome

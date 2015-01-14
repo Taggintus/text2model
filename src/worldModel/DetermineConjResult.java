@@ -5,9 +5,9 @@
  * 10785 Berlin
  * Germany
  */
-package com.inubit.research.textToProcess.worldModel;
+package worldModel;
 
-import com.inubit.research.textToProcess.transform.ConjunctionElement.ConjunctionType;
+import transform.ConjunctionElement.ConjunctionType;
 
 /**
  * @author ff

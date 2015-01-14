@@ -7,8 +7,8 @@
  */
 package worldModel;
 
-import com.inubit.research.textToProcess.processing.WordNetWrapper;
-import com.inubit.research.textToProcess.text.T2PSentence;
+import processing.WordNetWrapper;
+import text.T2PSentence;
 
 /**
  * @author ff

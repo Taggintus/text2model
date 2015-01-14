@@ -5,10 +5,10 @@
  * 10785 Berlin
  * Germany
  */
-package com.inubit.research.textToProcess.worldModel;
+package worldModel;
 
-import com.inubit.research.textToProcess.processing.FrameNetWrapper.PhraseType;
-import com.inubit.research.textToProcess.text.T2PSentence;
+import processing.FrameNetWrapper.PhraseType;
+import text.T2PSentence;
 
 import de.saar.coli.salsa.reiter.framenet.FrameElement;
 

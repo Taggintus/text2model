@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import org.apache.commons.lang3.StringUtils;
 
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
@@ -26,7 +27,6 @@ import net.didion.jwnl.dictionary.Dictionary;
 import etc.Constants;
 import transform.ListUtils;
 import worldModel.Action;
-import com.inubit.research.util.StringUtils;
 
 /**
  * @author ff
@@ -245,7 +245,7 @@ public class WordNetWrapper {
 				for(Pointer p:_targets) {
 					if(p.getType() == PointerType.NOMINALIZATION && p.getTargetPOS() == POS.VERB) {
 						for(Word w:p.getTargetSynset().getWords()) {
-							int _d = StringUtils.calculateEditDistance(w.getLemma(), noun);
+							int _d = StringUtils.getLevenshteinDistance(w.getLemma(), noun);
 							if(_selected == null || _d<_distance) {
 								_selected = w.getLemma();
 								_distance = _d;

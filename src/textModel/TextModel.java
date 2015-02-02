@@ -1,19 +1,11 @@
-/**
- * copyright
- * Inubit AG
- * Schoeneberger Ufer 89
- * 10785 Berlin
- * Germany
- */
 package textModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.frapu.code.visualization.ProcessEdge;
-import net.frapu.code.visualization.ProcessModel;
-import net.frapu.code.visualization.ProcessNode;
-import net.frapu.code.visualization.ProcessUtils;
+import Nodes.Arc;
+import Models.ProcessModel;
+import Nodes.ProcessNode;
 
 /**
  * @author ff

@@ -2,11 +2,14 @@ package Nodes;
 
 public class ProcessNode {
 	
-	private String ID;
-	private String name;
+	private String ID = null;
+	private String name = null;
 	
 	public ProcessNode(String x) {
 		this.setName(x);
+	}
+	
+	public ProcessNode() {
 	}
 	
 	public String getID () {

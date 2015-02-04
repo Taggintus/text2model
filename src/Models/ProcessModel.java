@@ -2,7 +2,7 @@ package Models;
 
 import java.util.LinkedList;
 import Nodes.ProcessNode;
-import Nodes.Arc;
+import Nodes.ProcessEdge;
 
 public abstract class ProcessModel {
 
@@ -13,7 +13,7 @@ public abstract class ProcessModel {
 	/**
 	 * List of Arcs
 	 */
-	private LinkedList<Arc> Arcs = new LinkedList<Arc>();
+	private LinkedList<ProcessEdge> Arcs = new LinkedList<ProcessEdge>();
 	
 	
 	/**

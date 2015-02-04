@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 import net.frapu.code.visualization.ProcessObject;
 import net.frapu.code.visualization.bpmn.BPMNModel;
-import net.frapu.code.visualization.bpmn.FlowObject;
+import Nodes.FlowObject;
 
 import com.inubit.research.textToProcess.gui.LaneSplitOffControler;
 import processing.ITextParsingStatusListener;

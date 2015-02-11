@@ -13,6 +13,13 @@ public class Association extends ProcessNode {
 
 	    public Association() {
 	        super();
+	        initializeProperties();
+	    }
+	    
+	    private void initializeProperties() {
+	        setProperty(PROP_DIRECTION, DIRECTION_TARGET);
+	       // String[] direction = { DIRECTION_NONE, DIRECTION_SOURCE, DIRECTION_TARGET, DIRECTION_BOTH };
+	        //setPropertyEditor(PROP_DIRECTION, new ListSelectionPropertyEditor(direction));
 	    }
 	    
 	    

@@ -2,13 +2,16 @@ package Models;
 
 import java.util.*;
 
+import BPMN.Association;
+import Nodes.FlowObject;
+import Nodes.ProcessEdge;
+import Nodes.ProcessNode;
+
 public class BPMNModel extends ProcessModel {
 
-    private AttachedNodeHandler attachedNodeHandler = new AttachedIntermediateEventHandler();
 
     public BPMNModel() {
         super();
-        processUtils = new BPMNUtils();
     }
 
     /** 
@@ -17,16 +20,10 @@ public class BPMNModel extends ProcessModel {
      */
     public BPMNModel(String name) {
         super(name);
-        processUtils = new BPMNUtils();
     }
 
     public String getDescription() {
         return "BPMN 2.0";
-    }
-
-    @Override
-    public AttachedNodeHandler getAttachedNodeHandler() {
-        return attachedNodeHandler;
     }
 
     public void addFlowObject(FlowObject o) {
@@ -34,11 +31,11 @@ public class BPMNModel extends ProcessModel {
     }
 
     public void addFlow(ProcessEdge e) {
-        addEdge(e);
+        addProcessEdge(e);
     }
 
     public List<ProcessEdge> getFlows() {
-        return getEdges();
+        return getProcessEdges();
     }
 
     public List<FlowObject> getFlowObjects() {
@@ -55,7 +52,7 @@ public class BPMNModel extends ProcessModel {
 
     public List<SequenceFlow> getSequenceFlows() {
         List<SequenceFlow> result = new LinkedList<SequenceFlow>();
-        for (ProcessEdge f : super.getEdges()) {
+        for (ProcessEdge f : super.getProcessEdges()) {
             if (f instanceof SequenceFlow) {
                 result.add((SequenceFlow) f);
             }
@@ -65,7 +62,7 @@ public class BPMNModel extends ProcessModel {
 
     public LinkedList<Association> getAssociations() {
         LinkedList<Association> result = new LinkedList<Association>();
-        for (ProcessEdge f : super.getEdges()) {
+        for (ProcessEdge f : super.getProcessEdges()) {
             if (f instanceof Association) {
                 result.add((Association) f);
             }

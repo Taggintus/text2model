@@ -5,7 +5,53 @@ import Nodes.ProcessNode;
 import Nodes.ProcessEdge;
 
 public abstract class ProcessModel {
+	
+	public static String ATTR_XMLNS = "xmlns";
+	public static String TAG_MODEL = "model";
+    public static String TAG_NODES = "nodes";
+    public static String TAG_EDGES = "edges";
+    public static String TAG_PROPERTIES = "properties";
+    public static String ATTR_NAME = "name";
+    public static String ATTR_TYPE = "type";
+    public static String ATTR_ID = "id";
+    
+    /** A dirty flag */
+    private boolean dirtyFlag = false;
+	
+	protected String id;
+    /** The name of the ProcessModel */
+    public static String PROP_PROCESS_NAME;
+    /** The URI for this model (if applicable) */
+    public static String PROP_PROCESS_URI = "#uri";
+    /** A field for the owner of this model (if applicable */
+    public static String PROP_EDITOR = "#editor";
+    /** The creation date of the ProcessModel */
+    public static String PROP_CREATE_DATE = "#creationDate";
+    /** The author of this ProcessModel */
+    public static String PROP_AUTHOR = "author";
+    /** A comment for this ProcessModel */
+    public static String PROP_COMMENT = "comment";
+    /** The source version of this ProcessModel (optional) */
+    public static String PROP_SOURCE_VERSION = "#source_version";
+    /** An optional property holding the source folder alias */
+    public static String PROP_FOLDERALIAS = "#folder";
+    /** The last time this model was changed  */
+    public static String PROP_LASTCHECKIN = "#LAST_CHECKIN_TIME";
 
+    public ProcessModel () {}
+    
+    public ProcessModel (String name){
+    	PROP_PROCESS_NAME = name;
+    }
+
+    public void markAsDirty(boolean dirty) {
+        dirtyFlag = dirty;
+    }
+    
+    public boolean isDirty() {
+        return dirtyFlag;
+    }
+    
 	/**
 	 * List of ProcessNodes
 	 */
@@ -13,7 +59,9 @@ public abstract class ProcessModel {
 	/**
 	 * List of Arcs
 	 */
-	private LinkedList<ProcessEdge> Arcs = new LinkedList<ProcessEdge>();
+	private LinkedList<ProcessEdge> ProcessEdges = new LinkedList<ProcessEdge>();
+	
+	
 	
 	
 	/**
@@ -47,8 +95,8 @@ public abstract class ProcessModel {
 	 * adds an Arc to the set of Arcs
 	 * @param pn
 	 */
-	public synchronized void addArc(Arc a) {
-		Arcs.add(a);
+	public synchronized void addProcessEdge(ProcessEdge a) {
+		ProcessEdges.add(a);
 	}
 	
 	
@@ -56,8 +104,8 @@ public abstract class ProcessModel {
 	 * deletes an Arc from the set of Arcs
 	 * @param pn
 	 */
-	public synchronized void removeArc(Arc a) {
-		Arcs.remove(a);
+	public synchronized void removeProcessEdge(ProcessEdge a) {
+		ProcessEdges.remove(a);
 	}
 	
 	
@@ -65,8 +113,8 @@ public abstract class ProcessModel {
 	 * returns the set of Arcs
 	 * @return
 	 */
-	public synchronized LinkedList<Arc> getArcs () {
-		return Arcs;
+	public synchronized LinkedList<ProcessEdge> getProcessEdges () {
+		return ProcessEdges;
 	}
 	
 	
@@ -75,7 +123,7 @@ public abstract class ProcessModel {
      * method needs to be implemented.
      * @return
      */
-    public abstract LinkedList<Class<? extends Arc>> getSupportedEdgeClasses();
+    public abstract LinkedList<Class<? extends ProcessEdge>> getSupportedEdgeClasses();
     
     
     /**
@@ -92,4 +140,43 @@ public abstract class ProcessModel {
      * @return
      */
     public abstract String getDescription();
+    
+    /**
+     * Returns the ProcessNode of the model that belongs to a certain id.
+     * @param id
+     * @return 
+     */
+    public ProcessNode getNodeById(String id) {
+        for (ProcessNode node : getNodes()) {
+            if (node.getID().equals(id)) {
+                return node;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the ProcessNode(s) of the model that have the given name. More than one node
+     * is potentially returned since multiple nodes can have the same name. Returns an empty
+     * List if no node was found
+     * @param id
+     * @return 
+     */
+    public LinkedList<ProcessNode> getNodeByName(String name) {
+        LinkedList<ProcessNode> result = new LinkedList<ProcessNode>(); 
+        for (ProcessNode node : getNodes()) {
+            if (node.getName().equals(name)) {
+                result.add(node);
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the name of the process model.
+     * @return
+     */
+    public String getProcessName() {
+        return PROP_PROCESS_NAME;
+    }
 }

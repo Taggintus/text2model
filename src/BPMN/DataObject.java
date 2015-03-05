@@ -58,7 +58,7 @@ public class DataObject extends Artifact implements Linkable {
     public ReferenceChooserRestriction getReferenceRestrictions() {
         if (restrictions == null) {
             LinkedList<Class> classes = new LinkedList<Class>();
-            classes.add(DomainClass.class);
+            //classes.add(DomainClass.class);
             restrictions = new ReferenceChooserRestriction(null, classes);
         }
         return restrictions;

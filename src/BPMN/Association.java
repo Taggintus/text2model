@@ -1,8 +1,8 @@
 package BPMN;
 
-import Nodes.ProcessNode;
+import Nodes.ProcessEdge;
 
-public class Association extends ProcessNode {
+public class Association extends ProcessEdge {
 
 	 public final static String PROP_DIRECTION = "direction";
 

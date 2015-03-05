@@ -58,4 +58,12 @@ public abstract class ProcessNode extends ProcessObject {
 	    public void setProperty(String key, String value) {
 	        super.setProperty(key, value);
 	    }
+	    
+	    /**
+	     * Returns if this node is an instance of a subclass of Cluster
+	     * @return
+	     */
+	    public boolean isCluster() {
+	        return false;
+	    }
 }

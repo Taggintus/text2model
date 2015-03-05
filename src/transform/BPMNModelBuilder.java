@@ -17,38 +17,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.frapu.code.visualization.Cluster;
-import net.frapu.code.visualization.Configuration;
-import net.frapu.code.visualization.LayoutUtils;
-import net.frapu.code.visualization.ProcessEdge;
-import net.frapu.code.visualization.ProcessNode;
-import net.frapu.code.visualization.ProcessUtils;
-import net.frapu.code.visualization.bpmn.Association;
-import net.frapu.code.visualization.bpmn.BPMNModel;
-import net.frapu.code.visualization.bpmn.DataObject;
-import net.frapu.code.visualization.bpmn.EndEvent;
-import net.frapu.code.visualization.bpmn.ErrorIntermediateEvent;
-import net.frapu.code.visualization.bpmn.EventBasedGateway;
-import net.frapu.code.visualization.bpmn.ExclusiveGateway;
-import net.frapu.code.visualization.bpmn.FlowObject;
-import net.frapu.code.visualization.bpmn.Gateway;
-import net.frapu.code.visualization.bpmn.InclusiveGateway;
-import net.frapu.code.visualization.bpmn.IntermediateEvent;
-import net.frapu.code.visualization.bpmn.Lane;
-import net.frapu.code.visualization.bpmn.LaneableCluster;
-import net.frapu.code.visualization.bpmn.MessageFlow;
-import net.frapu.code.visualization.bpmn.MessageIntermediateEvent;
-import net.frapu.code.visualization.bpmn.ParallelGateway;
-import net.frapu.code.visualization.bpmn.Pool;
-import net.frapu.code.visualization.bpmn.SequenceFlow;
-import net.frapu.code.visualization.bpmn.StartEvent;
-import net.frapu.code.visualization.bpmn.Task;
-import net.frapu.code.visualization.bpmn.TerminateEndEvent;
-import net.frapu.code.visualization.bpmn.TimerIntermediateEvent;
+
+
+
+
+
+
+import BPMN.DataObject;
 import Models.ProcessModel;
-
-import com.inubit.research.layouter.gridLayouter.GridLayouter;
-
+import Nodes.ProcessNode;
 import etc.Constants;
 import etc.TextToProcess;
 import processing.ProcessingUtils;
@@ -70,39 +47,12 @@ import worldModel.Specifier.SpecifierType;
  * @author ff
  *
  */
-public class BPMNModelBuilder extends ProcessModelBuilder  {
+public class BPMNModelBuilder extends ProcessModelBuilder {
 	
-	private Configuration f_config = Configuration.getInstance();
-	
-	//Nodes
-	private final boolean EVENTS_TO_LABELS = true;
-	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
-	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
-	//Labeling
-	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));
-	private final int MAX_NAME_DEPTH = 3;
-	//Model in General
-	private final boolean BUILD_BLACK_BOX_POOL_COMMUNICATION = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_BB_POOLS));
-	private final boolean BUILD_DATA_OBJECTS = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_DATA_OBJECTS));
-	
-	
-	
-	private TextToProcess f_parent;
-	
-	private BPMNModel f_model = new BPMNModel("generated Model");
-	
-	private HashMap<Actor, String> f_ActorToName = new HashMap<Actor, String>();
-	private HashMap<String, Lane> f_NameToPool = new HashMap<String, Lane>();		
-	private HashMap<Action, FlowObject> f_elementsMap = new HashMap<Action, FlowObject>();
-	private HashMap<FlowObject, Action> f_elementsMap2 = new HashMap<FlowObject,Action>();
-	
-	private ArrayList<FlowObject> f_notAssigned = new ArrayList<FlowObject>();
-	private Lane f_lastPool = null;
-	private LaneableCluster f_mainPool;
-	
-	//for black box pools
-	private HashMap<ProcessNode,String> f_CommLinks = new HashMap<ProcessNode, String>();
-	private HashMap<String, Pool> f_bbPoolcache = new HashMap<String, Pool>();
+	public BPMNModelBuilder(TextToProcess parent) {
+		super(parent);
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	/**
@@ -142,7 +92,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 	 * @param world
 	 */
 	@Override
-	private void buildDataObjects(WorldModel world) {
+	public void buildDataObjects(WorldModel world) {
 		//to avoid double adding
 		HashMap<Action,List<String>> _handeledDOs = new HashMap<Action, List<String>>();
 		
@@ -187,7 +137,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 
 
 	@Override
-	private DataObject createDataObject(Action targetAc,String doName,boolean arriving) {
+	public DataObject createDataObject(Action targetAc,String doName,boolean arriving) {
 		ProcessNode _target = f_elementsMap.get(targetAc);
 		Lane _lane = getLaneForNode(_target);
 		if(_lane != null) {
@@ -211,6 +161,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 	/**
 	 * 
 	 */
+	//BPMN exclusive
 	private void buildBlackBoxPools(WorldModel world) {
 		if(BUILD_BLACK_BOX_POOL_COMMUNICATION) {
 			for(Action a:world.getActions()) {
@@ -223,7 +174,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 			}	
 		}
 	}
-
+	//BPMN exclusive
 	private void checkForBBPools(Action a) {
 		//candidate
 		Specifier _sender = containedSender(a.getSpecifiers(SpecifierType.PP));
@@ -286,15 +237,15 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 		}
 	}
 	
-	public Map<ProcessNode, String> getCommLinks(){
-		return f_CommLinks;
-	}
+
 
 	/**
 	 * create or retrieves a cached blackbox pool
 	 * @param a
 	 * @return
 	 */
+	
+	//BPMN exclusive
 	private Pool getBBPool(String name) {
 		if(f_bbPoolcache.containsKey(name)) {
 			return f_bbPoolcache.get(name);
@@ -307,39 +258,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 		}		 
 	}
 
-	/**
-	 * @param specifiers
-	 * @return
-	 */
-	private Specifier containedReceiver(List<Specifier> specifiers) {
-		return containsFrameElement(specifiers,ListUtils.getList("Donor","Source"));
-	}
-
-	/**
-	 * @param specifiers
-	 * @return
-	 */
-	private Specifier containedSender(List<Specifier> specifiers) {
-		return containsFrameElement(specifiers,ListUtils.getList("Addressee","Recipient"));
-	}
-
-	/**
-	 * @param specifiers
-	 * @param list
-	 * @return
-	 */
-	private Specifier containsFrameElement(List<Specifier> specifiers,
-			List<String> list) {
-		for(Specifier sp:specifiers) {
-			if(sp.getFrameElement() != null) {
-				if(list.contains(sp.getFrameElement().getName())) {
-					return sp;
-				}
-			}
-		}
-		return null;
-		
-	}
 
 	/**
 	 * @param world 
@@ -1112,6 +1030,66 @@ public class BPMNModelBuilder extends ProcessModelBuilder  {
 		}else {
 			_b.append(s.getName());
 		}
+	}
+	
+	/**
+	 * @param a
+	 * @return
+	 */
+	@Override
+	public String getName(ExtractedObject a,boolean addDet,int level,boolean compact) {
+		if(a == null) {
+			return "null";
+		}
+		if(a.needsResolve() && a.getReference() instanceof ExtractedObject) {
+			return getName((ExtractedObject)a.getReference(),addDet);
+		}
+		StringBuilder _b = new StringBuilder();
+		if(addDet && Constants.f_wantedDeterminers.contains(a.getDeterminer())) {
+			_b.append(a.getDeterminer());
+			_b.append(' ');
+		}
+		for(Specifier s:a.getSpecifiers(SpecifierType.AMOD)) {
+			_b.append(s.getName());
+			_b.append(' ');
+		}
+		for(Specifier s:a.getSpecifiers(SpecifierType.NUM)) {
+			_b.append(s.getName());
+			_b.append(' ');
+		}
+		for(Specifier s:a.getSpecifiers(SpecifierType.NN)) {
+			_b.append(s.getName());
+			_b.append(' ');
+		}		
+		_b.append(a.getName());
+		for(Specifier s:a.getSpecifiers(SpecifierType.NNAFTER)) {
+			_b.append(' ');
+			_b.append(s.getName());
+		}
+		if(level <= MAX_NAME_DEPTH)
+		for(Specifier s:a.getSpecifiers(SpecifierType.PP)) {
+			if(s.getPhraseType() == PhraseType.UNKNOWN && ADD_UNKNOWN_PHRASETYPES) {
+				if(s.getName().startsWith("of") || 
+						(!compact && s.getName().startsWith("into")) || 
+						(!compact && s.getName().startsWith("under")) ||
+						(!compact && s.getName().startsWith("about"))) {
+					addSpecifier(level, _b, s,compact);
+				}	
+			}else if(considerPhrase(s)) {
+				addSpecifier(level, _b, s,compact);
+			}
+			
+		}
+		if(!compact) {
+			for(Specifier s:a.getSpecifiers(SpecifierType.INFMOD)) {
+				_b.append(' ');
+				_b.append(s.getName());
+			}for(Specifier s:a.getSpecifiers(SpecifierType.PARTMOD)) {
+				_b.append(' ');
+				_b.append(s.getName());
+			}
+		}
+		return _b.toString();
 	}
 
 }

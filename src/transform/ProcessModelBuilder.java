@@ -31,8 +31,8 @@ import BPMN.EndEvent;
 import BPMN.ErrorIntermediateEvent;
 import BPMN.EventBasedGateway;
 import BPMN.ExclusiveGateway;
-import BPMN.FlowObject;
-import BPMN.bpmn.Gateway;
+import Nodes.FlowObject;
+import BPMN.Gateway;
 import BPMN.InclusiveGateway;
 import BPMN.IntermediateEvent;
 import BPMN.Lane;
@@ -46,6 +46,8 @@ import BPMN.StartEvent;
 import BPMN.Task;
 import BPMN.TerminateEndEvent;
 import BPMN.TimerIntermediateEvent;
+import transform.AnalyzedSentence;
+
 
 import com.inubit.research.layouter.gridLayouter.GridLayouter;
 
@@ -132,7 +134,7 @@ public ProcessModelBuilder(TextToProcess parent) {
  * @param _a
  * @return
  */
-public Set<String> getDataObjectCandidates(SpecifiedElement ob) {
+private Set<String> getDataObjectCandidates(SpecifiedElement ob) {
 	if(ob == null) {
 		return new HashSet<String>(0);
 	}		
@@ -175,65 +177,87 @@ public Set<String> getDataObjectCandidates(SpecifiedElement ob) {
 	return _result;
 }
 
+public Map<ProcessNode, String> getCommLinks(){
+	return f_CommLinks;
+}
 
-	/**
-	 * @param a
-	 * @return
-	 */
-	private String getName(ExtractedObject a,boolean addDet,int level,boolean compact) {
-		if(a == null) {
-			return "null";
-		}
-		if(a.needsResolve() && a.getReference() instanceof ExtractedObject) {
-			return getName((ExtractedObject)a.getReference(),addDet);
-		}
-		StringBuilder _b = new StringBuilder();
-		if(addDet && Constants.f_wantedDeterminers.contains(a.getDeterminer())) {
-			_b.append(a.getDeterminer());
-			_b.append(' ');
-		}
-		for(Specifier s:a.getSpecifiers(SpecifierType.AMOD)) {
-			_b.append(s.getName());
-			_b.append(' ');
-		}
-		for(Specifier s:a.getSpecifiers(SpecifierType.NUM)) {
-			_b.append(s.getName());
-			_b.append(' ');
-		}
-		for(Specifier s:a.getSpecifiers(SpecifierType.NN)) {
-			_b.append(s.getName());
-			_b.append(' ');
-		}		
-		_b.append(a.getName());
-		for(Specifier s:a.getSpecifiers(SpecifierType.NNAFTER)) {
-			_b.append(' ');
-			_b.append(s.getName());
-		}
-		if(level <= MAX_NAME_DEPTH)
-		for(Specifier s:a.getSpecifiers(SpecifierType.PP)) {
-			if(s.getPhraseType() == PhraseType.UNKNOWN && ADD_UNKNOWN_PHRASETYPES) {
-				if(s.getName().startsWith("of") || 
-						(!compact && s.getName().startsWith("into")) || 
-						(!compact && s.getName().startsWith("under")) ||
-						(!compact && s.getName().startsWith("about"))) {
-					addSpecifier(level, _b, s,compact);
-				}	
-			}else if(considerPhrase(s)) {
-				addSpecifier(level, _b, s,compact);
-			}
-			
-		}
-		if(!compact) {
-			for(Specifier s:a.getSpecifiers(SpecifierType.INFMOD)) {
-				_b.append(' ');
-				_b.append(s.getName());
-			}for(Specifier s:a.getSpecifiers(SpecifierType.PARTMOD)) {
-				_b.append(' ');
-				_b.append(s.getName());
+
+/**
+ * @param specifiers
+ * @return
+ */
+private Specifier containedReceiver(List<Specifier> specifiers) {
+	return containsFrameElement(specifiers,ListUtils.getList("Donor","Source"));
+}
+
+/**
+ * @param specifiers
+ * @return
+ */
+private Specifier containedSender(List<Specifier> specifiers) {
+	return containsFrameElement(specifiers,ListUtils.getList("Addressee","Recipient"));
+}
+
+/**
+ * @param specifiers
+ * @param list
+ * @return
+ */
+private Specifier containsFrameElement(List<Specifier> specifiers,
+		List<String> list) {
+	for(Specifier sp:specifiers) {
+		if(sp.getFrameElement() != null) {
+			if(list.contains(sp.getFrameElement().getName())) {
+				return sp;
 			}
 		}
-		return _b.toString();
 	}
+	return null;
+	
+}
+
+
+/**
+ * @param world 
+ * 
+ */
+private void processMetaActivities(WorldModel world) {
+	for(Action a:world.getActions()) {
+		if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()) {					
+			if(WordNetWrapper.isVerbOfType(a.getName(),"end")){
+				//found an end verb
+				ProcessNode _pnode = f_elementsMap.get(a);
+				List<ProcessNode> _succs = f_model.getSuccessors(_pnode);
+//				boolean _allEnd = true;
+//				for(ProcessNode n:_succs) {
+//					if(!(n instanceof EndEvent)) {
+//						_allEnd = false;
+//						break;
+//					}
+//				}
+//				if(_allEnd) {
+					removeNode(a);
+					if(a.getName().equals("terminate") && _succs.size()==1) {
+						EndEvent _ee = (EndEvent) _succs.get(0);
+						try {
+							ProcessUtils.refactorNode(f_model, _ee, TerminateEndEvent.class);
+						}catch(Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+//				}					
+			}else if(WordNetWrapper.isVerbOfType(a.getName(),"start")) {
+				ProcessNode _pnode = f_elementsMap.get(a);
+				List<ProcessNode> _preds = f_model.getPredecessors(_pnode);
+				if(_preds.size() == 1 && _preds.get(0) instanceof StartEvent) {
+					//we do not need this node
+					removeNode(a);
+				}
+			}
+		}
+	}
+}
+
 
 
 
@@ -242,5 +266,7 @@ public abstract ProcessModel createProcessModel(WorldModel world);
 public abstract void buildDataObjects(WorldModel world);
 
 public abstract DataObject createDataObject(Action targetAc,String doName,boolean arriving);
+
+public abstract String getName(ExtractedObject a,boolean addDet,int level,boolean compact);
 
 }

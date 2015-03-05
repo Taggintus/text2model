@@ -3,6 +3,9 @@ package Models;
 import java.util.*;
 
 import BPMN.Association;
+import BPMN.Activity;
+import BPMN.Artifact;
+import BPMN.CallActivity;
 import Nodes.FlowObject;
 import Nodes.ProcessEdge;
 import Nodes.ProcessNode;

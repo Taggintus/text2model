@@ -2,13 +2,13 @@ package Models;
 
 import java.util.LinkedList;
 
-import Nodes.Arc;
+import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 
 public class EPCModel extends ProcessModel {
 
 	@Override
-	public LinkedList<Class<? extends Arc>> getSupportedEdgeClasses() {
+	public LinkedList<Class<? extends ProcessEdge>> getSupportedEdgeClasses() {
 		// TODO Auto-generated method stub
 		return null;
 	}

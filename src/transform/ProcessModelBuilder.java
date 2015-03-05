@@ -48,7 +48,6 @@ import BPMN.TerminateEndEvent;
 import BPMN.TimerIntermediateEvent;
 import transform.AnalyzedSentence;
 
-
 import com.inubit.research.layouter.gridLayouter.GridLayouter;
 
 import etc.Constants;
@@ -259,6 +258,85 @@ private void processMetaActivities(WorldModel world) {
 }
 
 
+/**
+ * 
+ */
+private void eventsToLabels() {
+	for(ProcessNode node:new ArrayList<ProcessNode>(f_model.getNodes())) {
+		if(node instanceof Gateway || node instanceof ErrorIntermediateEvent) {
+			List<ProcessNode> _succs = f_model.getSuccessors(node);
+			for(ProcessNode _succ : _succs) {
+				if(_succ.getClass().getSimpleName().equals("IntermediateEvent")) { //only simple intermediate events
+					List<ProcessNode> _succsIE = f_model.getSuccessors(_succ);
+					if(_succsIE.size() == 1) {
+						String _lbl = _succ.getName();
+						SequenceFlow _newFlow = removeNode(_succ);
+						_newFlow.setLabel(_lbl);
+					}
+				}else if(_succ instanceof Task) {
+					Action _action = f_elementsMap2.get(_succ);
+					List<Specifier> _specs = _action.getSpecifiers(SpecifierType.PP);
+					if(_action.getActorFrom() != null) {
+						_specs.addAll(_action.getActorFrom().getSpecifiers(SpecifierType.PP));
+					}
+					for(Specifier spec:_specs) {
+						if(SearchUtils.startsWithAny(spec.getPhrase(),Constants.f_conditionIndicators)
+								&& !Constants.f_conditionIndicators.contains(spec.getPhrase())) { //it should only be the start of a phrase, not the whole phrase!
+							//found the phrase which can serve as a label
+							SequenceFlow _sqf = (SequenceFlow) f_model.getConnectingEdge(node, _succ);
+							_sqf.setLabel(spec.getPhrase());
+							break;
+						}
+					}
+					//}
+					
+				}
+			}
+		}
+	}
+}
+
+
+
+/**
+ * @param actorFrom
+ * @return
+ */
+private boolean hasHiddenAction(ExtractedObject obj) {
+	boolean _canBeGerund = false;
+	for(Specifier spec:obj.getSpecifiers(SpecifierType.PP)) {
+		if(spec.getName().startsWith("of")) {
+			_canBeGerund = true;
+		}
+	}
+	if(!_canBeGerund) {
+		return false;
+	}
+	if(obj != null) {
+		for(String s:obj.getName().split(" ")) {
+			if(WordNetWrapper.deriveVerb(s) != null) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * @param world 
+ * 
+ */
+private void removeDummies(WorldModel world) {
+	for(Action a:world.getActions()) {
+		if(a instanceof DummyAction || a.getTransient()) {
+			removeNode(a);
+		}else {
+			if(f_elementsMap.get(a).getText().equals("Dummy")) {
+				removeNode(a);
+			}				
+		}
+	}
+}
 
 
 public abstract ProcessModel createProcessModel(WorldModel world);

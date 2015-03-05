@@ -7,7 +7,7 @@
  */
 package transform;
 
-import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,8 +23,10 @@ import java.util.Set;
 
 
 
+
 import BPMN.DataObject;
 import Models.ProcessModel;
+import Nodes.FlowObject;
 import Nodes.ProcessNode;
 import etc.Constants;
 import etc.TextToProcess;
@@ -259,85 +261,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	}
 
 
-	/**
-	 * @param world 
-	 * 
-	 */
-	private void processMetaActivities(WorldModel world) {
-		for(Action a:world.getActions()) {
-			if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()) {					
-				if(WordNetWrapper.isVerbOfType(a.getName(),"end")){
-					//found an end verb
-					ProcessNode _pnode = f_elementsMap.get(a);
-					List<ProcessNode> _succs = f_model.getSuccessors(_pnode);
-//					boolean _allEnd = true;
-//					for(ProcessNode n:_succs) {
-//						if(!(n instanceof EndEvent)) {
-//							_allEnd = false;
-//							break;
-//						}
-//					}
-//					if(_allEnd) {
-						removeNode(a);
-						if(a.getName().equals("terminate") && _succs.size()==1) {
-							EndEvent _ee = (EndEvent) _succs.get(0);
-							try {
-								ProcessUtils.refactorNode(f_model, _ee, TerminateEndEvent.class);
-							}catch(Exception ex) {
-								ex.printStackTrace();
-							}
-						}
-//					}					
-				}else if(WordNetWrapper.isVerbOfType(a.getName(),"start")) {
-					ProcessNode _pnode = f_elementsMap.get(a);
-					List<ProcessNode> _preds = f_model.getPredecessors(_pnode);
-					if(_preds.size() == 1 && _preds.get(0) instanceof StartEvent) {
-						//we do not need this node
-						removeNode(a);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private void eventsToLabels() {
-		for(ProcessNode node:new ArrayList<ProcessNode>(f_model.getNodes())) {
-			if(node instanceof Gateway || node instanceof ErrorIntermediateEvent) {
-				List<ProcessNode> _succs = f_model.getSuccessors(node);
-				for(ProcessNode _succ : _succs) {
-					if(_succ.getClass().getSimpleName().equals("IntermediateEvent")) { //only simple intermediate events
-						List<ProcessNode> _succsIE = f_model.getSuccessors(_succ);
-						if(_succsIE.size() == 1) {
-							String _lbl = _succ.getName();
-							SequenceFlow _newFlow = removeNode(_succ);
-							_newFlow.setLabel(_lbl);
-						}
-					}else if(_succ instanceof Task) {
-						Action _action = f_elementsMap2.get(_succ);
-						List<Specifier> _specs = _action.getSpecifiers(SpecifierType.PP);
-						if(_action.getActorFrom() != null) {
-							_specs.addAll(_action.getActorFrom().getSpecifiers(SpecifierType.PP));
-						}
-						for(Specifier spec:_specs) {
-							if(SearchUtils.startsWithAny(spec.getPhrase(),Constants.f_conditionIndicators)
-									&& !Constants.f_conditionIndicators.contains(spec.getPhrase())) { //it should only be the start of a phrase, not the whole phrase!
-								//found the phrase which can serve as a label
-								SequenceFlow _sqf = (SequenceFlow) f_model.getConnectingEdge(node, _succ);
-								_sqf.setLabel(spec.getPhrase());
-								break;
-							}
-						}
-						//}
-						
-					}
-				}
-			}
-		}
-	}
-
+	//BPMN exclusive
 	private void createActions(WorldModel world) {
 		for(Action a:world.getActions()) {
 			FlowObject _obj;
@@ -350,9 +274,9 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			}
 			
 			if(HIGHLIGHT_LOW_ENTROPY) {
-				if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()) {
-					_obj.setBackground(Color.YELLOW);
-				}
+				if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()); //{
+				//	_obj.setBackground(Color.YELLOW);
+			//	}
 			}
 			
 			f_elementsMap.put(a,_obj);
@@ -386,6 +310,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	 * @param a
 	 * @return
 	 */
+	//BPMN exclusive
 	private IntermediateEvent createEventNode(Action a) {
 		for(Specifier spec:a.getSpecifiers()) {
 			for(String word:spec.getPhrase().split(" ")) {
@@ -423,46 +348,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		return false;
 	}
 
-
-	/**
-	 * @param actorFrom
-	 * @return
-	 */
-	private boolean hasHiddenAction(ExtractedObject obj) {
-		boolean _canBeGerund = false;
-		for(Specifier spec:obj.getSpecifiers(SpecifierType.PP)) {
-			if(spec.getName().startsWith("of")) {
-				_canBeGerund = true;
-			}
-		}
-		if(!_canBeGerund) {
-			return false;
-		}
-		if(obj != null) {
-			for(String s:obj.getName().split(" ")) {
-				if(WordNetWrapper.deriveVerb(s) != null) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @param world 
-	 * 
-	 */
-	private void removeDummies(WorldModel world) {
-		for(Action a:world.getActions()) {
-			if(a instanceof DummyAction || a.getTransient()) {
-				removeNode(a);
-			}else {
-				if(f_elementsMap.get(a).getText().equals("Dummy")) {
-					removeNode(a);
-				}				
-			}
-		}
-	}
 	
 	private SequenceFlow removeNode(Action a) {
 		ProcessNode _node = toProcessNode(a);

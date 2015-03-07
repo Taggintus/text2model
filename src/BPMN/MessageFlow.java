@@ -1,8 +1,9 @@
 package BPMN;
 
+import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 
-public class MessageFlow {
+public class MessageFlow extends ProcessEdge {
 	
 	 public MessageFlow() {
 	        super();

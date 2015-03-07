@@ -6,13 +6,19 @@ import BPMN.Association;
 import BPMN.Activity;
 import BPMN.Artifact;
 import BPMN.CallActivity;
+import BPMN.ChoreographyActivity;
 import BPMN.Conversation;
+import BPMN.ConversationLink;
 import BPMN.EndEvent;
 import BPMN.Gateway;
+import BPMN.IntermediateEvent;
 import BPMN.Lane;
 import BPMN.LaneableCluster;
 import BPMN.Message;
 import BPMN.MessageFlow;
+import BPMN.Pool;
+import BPMN.SequenceFlow;
+import BPMN.StartEvent;
 import Nodes.Cluster;
 import Nodes.FlowObject;
 import Nodes.ProcessEdge;
@@ -87,7 +93,7 @@ public class BPMNModel extends ProcessModel {
      * @param node
      * @return
      */
-    public Pool getPoolForNode(ProcessNode node) {
+    /*public Pool getPoolForNode(ProcessNode node) {
         // Get Cluster
         Cluster c = getClusterForNode(node);
         if (c==null) return null; // Not in any Cluster
@@ -96,7 +102,7 @@ public class BPMNModel extends ProcessModel {
             c = getClusterForNode(c);
         }
         return null;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -143,5 +149,7 @@ public class BPMNModel extends ProcessModel {
         	}
         }
     }
+    
+    
 }
 

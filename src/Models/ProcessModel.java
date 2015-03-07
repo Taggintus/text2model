@@ -1,6 +1,8 @@
 package Models;
 
 import java.util.LinkedList;
+import java.util.List;
+
 import Nodes.ProcessNode;
 import Nodes.ProcessEdge;
 
@@ -113,7 +115,7 @@ public abstract class ProcessModel {
 	 * returns the set of Arcs
 	 * @return
 	 */
-	public synchronized LinkedList<ProcessEdge> getProcessEdges () {
+	public synchronized List<ProcessEdge> getProcessEdges () {
 		return ProcessEdges;
 	}
 	
@@ -123,7 +125,7 @@ public abstract class ProcessModel {
      * method needs to be implemented.
      * @return
      */
-    public abstract LinkedList<Class<? extends ProcessEdge>> getSupportedEdgeClasses();
+    public abstract List<Class<? extends ProcessEdge>> getSupportedEdgeClasses();
     
     
     /**
@@ -131,7 +133,7 @@ public abstract class ProcessModel {
      * method needs to be implemented.
      * @return
      */
-    public abstract LinkedList<Class<? extends ProcessNode>> getSupportedNodeClasses();
+    public abstract List<Class<? extends ProcessNode>> getSupportedNodeClasses();
     
     
     /**
@@ -148,7 +150,7 @@ public abstract class ProcessModel {
      */
     public ProcessNode getNodeById(String id) {
         for (ProcessNode node : getNodes()) {
-            if (node.getID().equals(id)) {
+            if (node.getId().equals(id)) {
                 return node;
             }
         }

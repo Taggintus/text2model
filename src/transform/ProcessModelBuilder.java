@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.frapu.code.visualization.Cluster;
+import Nodes.Cluster;
 import net.frapu.code.visualization.Configuration;
 import net.frapu.code.visualization.LayoutUtils;
 import Nodes.ProcessEdge;

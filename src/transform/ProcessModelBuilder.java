@@ -28,7 +28,6 @@ import Models.BPMNModel;
 import Models.ProcessModel;
 import BPMN.DataObject;
 import BPMN.EndEvent;
-import BPMN.ErrorIntermediateEvent;
 import BPMN.EventBasedGateway;
 import BPMN.ExclusiveGateway;
 import Nodes.FlowObject;
@@ -38,14 +37,13 @@ import BPMN.IntermediateEvent;
 import BPMN.Lane;
 import BPMN.LaneableCluster;
 import BPMN.MessageFlow;
-import BPMN.MessageIntermediateEvent;
+
 import BPMN.ParallelGateway;
 import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
-import BPMN.TerminateEndEvent;
-import BPMN.TimerIntermediateEvent;
+
 import transform.AnalyzedSentence;
 
 import com.inubit.research.layouter.gridLayouter.GridLayouter;

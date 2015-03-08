@@ -28,10 +28,25 @@ import java.util.Set;
 
 
 
+
+
+
+
+
+
+
+
+import BPMN.Association;
 import BPMN.DataObject;
 import BPMN.EndEvent;
 import BPMN.Gateway;
+import BPMN.IntermediateEvent;
 import BPMN.Lane;
+import BPMN.MessageFlow;
+import BPMN.ParallelGateway;
+import BPMN.Pool;
+import BPMN.SequenceFlow;
+import BPMN.Task;
 import Models.BPMNModel;
 import Models.ProcessModel;
 import Nodes.Cluster;
@@ -40,6 +55,7 @@ import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 import etc.Constants;
 import etc.TextToProcess;
+import processing.ProcessUtils;
 import processing.ProcessingUtils;
 import processing.WordNetWrapper;
 import processing.FrameNetWrapper.PhraseType;
@@ -689,6 +705,13 @@ private void finishDanglingEnds() {
 			}
 		}
 		return _b.toString();
+	}
+
+
+	@Override
+	public void layoutModel(ProcessModel _result) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

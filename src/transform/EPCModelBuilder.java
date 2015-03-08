@@ -3,6 +3,7 @@ package transform;
 import worldModel.Action;
 import worldModel.ExtractedObject;
 import worldModel.WorldModel;
+import BPMN.DataObject;
 import Models.ProcessModel;
 import etc.TextToProcess;
 
@@ -37,6 +38,12 @@ public class EPCModelBuilder extends ProcessModelBuilder {
 			boolean compact) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void layoutModel(ProcessModel _result) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

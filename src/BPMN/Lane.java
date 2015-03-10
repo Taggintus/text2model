@@ -4,6 +4,9 @@ import java.util.LinkedList;
 
 import tools.ReferenceChooserRestriction;
 import Nodes.Linkable;
+import OrgChart.ManagerialRole;
+import OrgChart.Person;
+import OrgChart.Role;
 
 public class Lane extends LaneableCluster implements Linkable {
 	

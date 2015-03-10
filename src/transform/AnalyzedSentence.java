@@ -12,11 +12,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.frapu.code.visualization.Configuration;
+
+
 
 import etc.Constants;
 import processing.ProcessingUtils;
 import text.T2PSentence;
+import tools.Configuration;
 import transform.ConjunctionElement.ConjunctionType;
 import worldModel.Action;
 import worldModel.Actor;
@@ -26,7 +28,6 @@ import worldModel.SpecifiedElement;
 import worldModel.Specifier;
 import worldModel.WorldModel;
 import worldModel.Specifier.SpecifierType;
-
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TypedDependency;

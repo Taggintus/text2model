@@ -32,7 +32,7 @@ public class FrameNetDataTransformer {
 	private static String targetFolder = "FrameNet/fndata-1.5/lu-reduced/";
 	private static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	private static DocumentBuilder db = null; 
-	private static XMLSerializer serializer = new XMLSerializer();   
+	//private static XMLSerializer serializer = new XMLSerializer();   
 		
 	static {
 		try {
@@ -47,7 +47,7 @@ public class FrameNetDataTransformer {
 	}
 	
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		parse(new File(fnFolder), ".*");
 	}
 			
@@ -79,5 +79,5 @@ public class FrameNetDataTransformer {
 			e1.printStackTrace();
 		}
 		
-	}	
+	}*/
 }

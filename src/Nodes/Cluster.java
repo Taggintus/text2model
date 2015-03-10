@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import tools.BooleanPropertyEditor;
-
 public abstract class Cluster extends ProcessNode {
 	
 	/** Property for the contained Nodes of this Cluster */

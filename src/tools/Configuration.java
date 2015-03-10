@@ -2,8 +2,6 @@ package tools;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class Configuration {

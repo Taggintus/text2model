@@ -426,7 +426,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		
 		ProcessNode _pre = null;
 		ProcessNode _succ = null;
-		for(ProcessEdge edge:f_model.getEdges()) {
+		for(ProcessEdge edge:f_model.getProcessEdges()) { //war vorher getEdges
 			if(edge.getTarget().equals(node)) {
 				_pre = edge.getSource();
 			}
@@ -455,7 +455,7 @@ private void finishDanglingEnds() {
 			//has to be the source somewhere
 			int _inC = 0;
 			int _outC = 0;
-			for(ProcessEdge e:f_model.getEdges()) {
+			for(ProcessEdge e:f_model.getProcessEdges()) {
 				if(e.getSource().equals(node)) {
 					_outC++;
 				}else if (e.getTarget().equals(node)) {

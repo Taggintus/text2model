@@ -1,16 +1,10 @@
 package processing;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,16 +12,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import Models.ProcessModel;
+import Nodes.Cluster;
 import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 
-import javax.swing.ImageIcon;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 
 /**
  * 
@@ -121,5 +111,41 @@ public abstract class ProcessUtils {
     public List<Class<? extends ProcessNode>> getNextNodesRecommendation(ProcessModel model, ProcessNode node) {
         // Return empty list by default, might be overwritten by subclasses.
         return new LinkedList<Class<? extends ProcessNode>>();
+    }
+    
+    /**
+     * uses the movToFront to arrange the nodes in a non-overlapping manner.
+     * This is necessary, as the nodes in the workflow.xml can in an arbitrary ordering.
+     */
+    public static void sortTopologically(ProcessModel model) {
+        //work on a copy as moveToFront changes the list
+        ArrayList<ProcessNode> _nodes = new ArrayList<ProcessNode>();
+        _nodes.addAll(model.getNodes());
+
+        //moving subProcesses to the front, starting with the largest
+        HashSet<ProcessNode> _moved = new HashSet<ProcessNode>();
+        ProcessNode _largest;
+        do {
+            _largest = null;
+            //finding the (widest) subProcess, so it is behind the other elements
+            for (ProcessNode sub : _nodes) {
+                if ((sub instanceof Cluster) && !_moved.contains(sub)) {
+                    if (_largest == null) {
+                        _largest = sub;
+                    }
+                }
+            }
+            if (_largest != null) {
+                _moved.add(_largest);
+                model.moveToFront(_largest);
+            }
+        } while (_largest != null);
+        //moving all other nodes to the front (due to that, pools are in the back)
+        for (ProcessNode p : _nodes) {
+            if (!(p instanceof Cluster)) {
+                //changes list structure, but does not cause problems!
+                model.moveToFront(p);
+            }
+        }
     }
 }

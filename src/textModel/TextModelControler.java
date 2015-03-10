@@ -280,12 +280,15 @@ public class TextModelControler extends ProcessUtils {
 		f_analyzer = analyzer;
 		f_builder = builder;
 		f_model = model;
-		f_model.setUtils(this);
-		f_model.addListener(this);		
+		f_model.setUtils(this);	
 		f_processor = processor;
 		setShowLinks(model, f_showLinks);
 		setShowReferences(model, f_showRefs);
 	}
+	
+	public void setShowReferences(ProcessModel model, boolean selected) {
+    	f_showRefs = selected;
+    }
 
 	@Override
 	public ProcessEdge createDefaultEdge(ProcessNode source, ProcessNode target) {
@@ -331,11 +334,6 @@ public class TextModelControler extends ProcessUtils {
 	
 	public void setShowLinks(ProcessModel model, boolean selected) {
 		f_showLinks = selected;
-    	for(ProcessEdge edge:model.getProcessEdges()){
-            if(edge instanceof TextLinkEdge){
-                edge.setAlpha(selected ? TextModelBuilder.DEFAULT_EDGE_ALPHA: 0.0f);
-            }
-        }
     }
 
 

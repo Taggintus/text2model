@@ -55,7 +55,7 @@ public abstract class SerializableProcessObject implements Cloneable {
     }
 
     @Override
-    protected Object clone() {
+	public Object clone() {
         try {
             SerializableProcessObject copy = (SerializableProcessObject) super.clone();
             copy.properties = (HashMap<String, String>) this.properties.clone();

@@ -304,7 +304,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			return f_bbPoolcache.get(name);
 		}else {
 			Pool _result = new Pool(0,-100,name);
-			_result.setProperty(Pool.PROP_BLACKBOX_POOL, Pool.TRUE);
+			_result.setProperty(Pool.PROP_BLACKBOX_POOL, "TRUE");
 			f_bbPoolcache.put(name, _result);
 			f_model.addNode(_result);
 			return _result;

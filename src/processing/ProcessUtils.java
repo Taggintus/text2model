@@ -1,9 +1,31 @@
 package processing;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import Nodes.ProcessEdge;
+
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 /**
  * 
@@ -45,5 +67,38 @@ public abstract class ProcessUtils {
             property.setAttribute(ATTR_VALUE, props.get(key));
             nodeToAddTo.appendChild(property);
         }
+    }
+    
+    public static HashMap<String, String> readProperties(XPath xpath, Node node) {
+        HashMap<String, String> props = new HashMap<String, String>();
+        String query;
+        Object res;
+        // Get all properties
+        query = "./" + TAG_PROPERTY;
+        try {
+            res = xpath.evaluate(query, node, XPathConstants.NODESET);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return props;
+        }
+        NodeList propertyNodes = (NodeList) res;
+
+        for (int i1 = 0; i1 < propertyNodes.getLength(); i1++) {
+            Element property = (Element) propertyNodes.item(i1);
+
+            String key = property.getAttribute(ATTR_NAME);
+            String value = property.getAttribute(ATTR_VALUE);
+
+            // Hack to update old ProcessModels with editable sources and targets
+            if (key.equals("sourceNode")) {
+                key = ProcessEdge.PROP_SOURCENODE;
+            }
+            if (key.equals("targetNode")) {
+                key = ProcessEdge.PROP_TARGETNODE;
+            }
+
+            props.put(key, value);
+        }
+        return props;
     }
 }

@@ -181,4 +181,21 @@ public abstract class ProcessModel {
     public String getProcessName() {
         return PROP_PROCESS_NAME;
     }
+    
+    /**
+     * Returns the list of successor nodes for a node n.
+     * @param n
+     * @return
+     */
+    public List<ProcessNode> getSuccessors(ProcessNode n) {
+        List<ProcessNode> result = new LinkedList<ProcessNode>();
+
+        for (ProcessEdge e : getEdges()) {
+            if (e.getSource() == n) {
+                result.add(e.getTarget());
+            }
+        }
+
+        return result;
+    }
 }

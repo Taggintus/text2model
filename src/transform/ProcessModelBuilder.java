@@ -369,7 +369,7 @@ protected void eventsToLabels() {
 	}
 }
 
-private SequenceFlow removeNode(ProcessNode a) {
+private SequenceFlow removeNode(Action a) {
 	ProcessNode _node = toProcessNode();
 //	if(f_model.getPredecessors(_node).size() == 0) {
 //		//add a start node in front
@@ -382,7 +382,7 @@ private SequenceFlow removeNode(ProcessNode a) {
 //		SequenceFlow _sqf = new SequenceFlow(_start,_node);
 //		f_model.addFlow(_sqf);
 //	}
-	return removeNode(_node);
+	return removeNode(a);
 }
 
 

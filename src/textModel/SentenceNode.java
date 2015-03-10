@@ -16,15 +16,17 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-import net.frapu.code.visualization.Cluster;
-import net.frapu.code.visualization.ProcessNode;
-import net.frapu.code.visualization.ProcessUtils;
+import Nodes.ProcessNode;
+
+//import net.frapu.code.visualization.Cluster;
+//import net.frapu.code.visualization.ProcessNode;
+//import net.frapu.code.visualization.ProcessUtils;
 
 /**
  * @author ff
  *
  */
-public class SentenceNode extends Cluster {
+public class SentenceNode extends Nodes.Cluster {
 
 
 	public static final int DISTANCE_LEFT = 10; //pixel

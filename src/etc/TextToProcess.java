@@ -12,11 +12,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import net.frapu.code.visualization.ProcessObject;
-import net.frapu.code.visualization.bpmn.BPMNModel;
+import Models.BPMNModel;
 import Nodes.FlowObject;
-
-import com.inubit.research.textToProcess.gui.LaneSplitOffControler;
+import Nodes.ProcessObject;
 import processing.ITextParsingStatusListener;
 import processing.T2PStanfordWrapper;
 import text.T2PSentence;
@@ -29,7 +27,6 @@ import transform.TextAnalyzer;
 import transform.TextModelBuilder;
 import worldModel.Action;
 import worldModel.SpecifiedElement;
-
 import edu.stanford.nlp.trees.TypedDependency;
 
 /**

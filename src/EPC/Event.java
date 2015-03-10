@@ -1,11 +1,11 @@
 package EPC;
 
-import Nodes.ProcessNode;
+import Nodes.FlowObject;
 
-public class Event extends ProcessNode {
+public class Event extends FlowObject {
 	
-	public Event (String name) {
-		super(name);
+	public Event () {
+		super();
 	}
 
 }

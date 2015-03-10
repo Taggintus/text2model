@@ -1,6 +1,5 @@
 package BPMN;
 
-import tools.BooleanPropertyEditor;
 import Nodes.FlowObject;
 
 public class Message extends FlowObject{

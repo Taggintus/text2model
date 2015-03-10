@@ -1,12 +1,10 @@
 package BPMN;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import tools.BooleanPropertyEditor;
 import Nodes.Cluster;
 import Nodes.ProcessNode;
 

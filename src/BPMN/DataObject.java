@@ -3,7 +3,6 @@ package BPMN;
 import java.util.LinkedList;
 
 import Nodes.Linkable;
-import tools.BooleanPropertyEditor;
 import tools.ReferenceChooserRestriction;
 
 public class DataObject extends Artifact implements Linkable {

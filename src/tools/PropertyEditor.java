@@ -1,6 +1,5 @@
 package tools;
 
-import java.awt.Component;
 
 import Nodes.ProcessObject;
 
@@ -51,7 +50,4 @@ public abstract class PropertyEditor {
     public void free() {
         // Do nothing here
     }
-    
-    public abstract Component getComponent();
-
 }

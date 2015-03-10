@@ -42,6 +42,7 @@ import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
+import BPMN.TerminateEndEvent;
 import tools.Configuration;
 import transform.AnalyzedSentence;
 
@@ -590,7 +591,7 @@ private void addSpecifiers(Action a, StringBuilder _b, int limit,boolean smaller
  * @param spec
  * @return
  */
-private boolean considerPhrase(Specifier spec) {
+protected boolean considerPhrase(Specifier spec) {
 	if(spec.getPhraseType() == PhraseType.PERIPHERAL || spec.getPhraseType() == PhraseType.EXTRA_THEMATIC) {
 		return false;
 	}else {

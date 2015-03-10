@@ -20,6 +20,7 @@ import java.util.Set;
 import BPMN.Association;
 import BPMN.DataObject;
 import BPMN.EndEvent;
+import BPMN.ErrorIntermediateEvent;
 import BPMN.EventBasedGateway;
 import BPMN.ExclusiveGateway;
 import BPMN.Gateway;
@@ -28,11 +29,13 @@ import BPMN.IntermediateEvent;
 import BPMN.Lane;
 import BPMN.LaneableCluster;
 import BPMN.MessageFlow;
+import BPMN.MessageIntermediateEvent;
 import BPMN.ParallelGateway;
 import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
+import BPMN.TimerIntermediateEvent;
 import Models.BPMNModel;
 import Models.ProcessModel;
 import Nodes.Cluster;
@@ -618,9 +621,9 @@ private void finishDanglingEnds() {
 		String _name = createTaskText(a);
 		_result.setText(_name);
 		_result.pack();
-		if(_result.getSize().height < 60) {
-			_result.setSize(_result.getSize().width, 60);
-		}
+//		if(_result.getSize().height < 60) {
+//			_result.setSize(_result.getSize().width, 60);
+//		}
 		f_model.addFlowObject(_result);
 		return _result;
 	}
@@ -659,14 +662,14 @@ private void finishDanglingEnds() {
 		return null;
 	}
 
-	public void layoutModel(BPMNModel _result) {
+	/*public void layoutModel(BPMNModel _result) {
 		GridLayouter _layouter = new GridLayouter(Configuration.getProperties());
 		try {
 			_layouter.layoutModel(LayoutUtils.getAdapter(_result));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 	/**

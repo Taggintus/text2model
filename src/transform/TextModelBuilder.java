@@ -7,11 +7,12 @@
  */
 package transform;
 
-import java.awt.Color;
+
 import java.util.HashMap;
 
-import net.frapu.code.visualization.ProcessNode;
+import com.google.gwt.thirdparty.javascript.jscomp.graph.GraphColoring.Color;
 
+//import net.frapu.code.visualization.ProcessNode;
 import text.T2PSentence;
 import textModel.SentenceNode;
 import textModel.TextEdge;
@@ -21,6 +22,7 @@ import textModel.WordNode;
 import worldModel.Action;
 import worldModel.ExtractedObject;
 import worldModel.SpecifiedElement;
+import Nodes.ProcessNode;
 
 /**
  * @author ff
@@ -31,11 +33,11 @@ public class TextModelBuilder {
 	/**
 	 * 
 	 */
-	public static final Color COLOR_REFERENCE_EDGES = Color.BLACK;
+//	public static final Color COLOR_REFERENCE_EDGES = Color.BLACK;
 	/**
 	 * 
 	 */
-	public static final Color COLOR_LINK_EDGES = Color.BLUE;
+//	public static final Color COLOR_LINK_EDGES = Color.class;
 	/**
 	 * 
 	 */
@@ -76,13 +78,13 @@ public class TextModelBuilder {
 					SpecifiedElement _target = ele.getReference();
 					WordNode _end = (WordNode) getProcessNode(_target);
 					TextEdge _edge = new TextEdge();
-					_edge.setColor(TextModelBuilder.COLOR_REFERENCE_EDGES);
+//					_edge.setColor(TextModelBuilder.COLOR_REFERENCE_EDGES);
 					_edge.setAlpha(TextModelBuilder.DEFAULT_EDGE_ALPHA);
 					_edge.setSource(_start);
 					_edge.setTarget(_end);
 					_result.addEdge(_edge);
 				}else {
-					_start.setBackground(new Color(255,200,200));
+//					_start.setBackground(new Color(255,200,200));
 				}
 			}			
 		}			
@@ -94,20 +96,20 @@ public class TextModelBuilder {
 			ProcessNode _aNode = getProcessNode(a);
 			ProcessNode _bNode = getProcessNode(a.getLink());		
 			TextLinkEdge _edge = new TextLinkEdge();
-			_edge.setColor(TextModelBuilder.COLOR_LINK_EDGES);
+//			_edge.setColor(TextModelBuilder.COLOR_LINK_EDGES);
 			_edge.setAlpha(0.5f);
 			_edge.setSource(_aNode);
 			_edge.setTarget(_bNode);
 			_result.addEdge(_edge);					
 		}
 		
-		int y = (int)((f_analyzer.getText().getSentences().size()) * 
+/* 	int y = (int)((f_analyzer.getText().getSentences().size()) * 
 				(SentenceNode.SENTENCE_HEIGHT+SentenceNode.SENTENCE_DISTANCE)) + SentenceNode.SENTENCE_DISTANCE;
 		_result.getLegend().setPos(
 				SentenceNode.DISTANCE_LEFT+_result.getLegend().getSize().width/2, 
 				y+_result.getLegend().getSize().height/2);
 		
-		return _result;
+		return _result; */
 	}
 	
 	public ProcessNode getProcessNode(SpecifiedElement a) {

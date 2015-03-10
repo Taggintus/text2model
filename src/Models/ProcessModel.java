@@ -1069,4 +1069,19 @@ public abstract class ProcessModel implements Cloneable {
      */
     public void stopTransaction() {
     }
+    
+
+
+    /**
+     * Adds a process edge to the model.
+     * @param f
+     */
+    public synchronized void addEdge(ProcessEdge f) {
+        processEdges.add(f);
+        // Add context
+        f.addContext(this);
+        // Mark as dirty
+        markAsDirty(true);
+        ProcessUtils.sortTopologically(this);
+    }
 }

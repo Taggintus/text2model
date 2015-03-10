@@ -48,11 +48,11 @@ public class BPMNModel extends ProcessModel {
     }
 
     public void addFlow(ProcessEdge e) {
-        addProcessEdge(e);
+        addEdge(e);
     }
 
     public List<ProcessEdge> getFlows() {
-        return getProcessEdges();
+        return getEdges();
     }
 
     public List<FlowObject> getFlowObjects() {
@@ -69,7 +69,7 @@ public class BPMNModel extends ProcessModel {
 
     public List<SequenceFlow> getSequenceFlows() {
         List<SequenceFlow> result = new LinkedList<SequenceFlow>();
-        for (ProcessEdge f : super.getProcessEdges()) {
+        for (ProcessEdge f : super.getEdges()) {
             if (f instanceof SequenceFlow) {
                 result.add((SequenceFlow) f);
             }
@@ -79,7 +79,7 @@ public class BPMNModel extends ProcessModel {
 
     public LinkedList<Association> getAssociations() {
         LinkedList<Association> result = new LinkedList<Association>();
-        for (ProcessEdge f : super.getProcessEdges()) {
+        for (ProcessEdge f : super.getEdges()) {
             if (f instanceof Association) {
                 result.add((Association) f);
             }

@@ -309,10 +309,10 @@ public class TextModelControler extends ProcessUtils {
 		addReferenceToTextAnalyzer(edge);		
 		//only possibility, an edge was added by our reference repointing
 		if(f_edge != null) {
-			for(ProcessEdge e:new ArrayList<ProcessEdge>(f_model.getEdges())) {
+			for(ProcessEdge e:new ArrayList<ProcessEdge>(f_model.getProcessEdges())) { //war vorher getEdge
 				if(e != f_edge) {
 					if(e.getSource().equals(f_edge.getSource())) {
-						f_model.removeEdge(e);
+						f_model.removeProcessEdge(e);
 					}
 				}
 			}
@@ -331,7 +331,7 @@ public class TextModelControler extends ProcessUtils {
 	
 	public void setShowLinks(ProcessModel model, boolean selected) {
 		f_showLinks = selected;
-    	for(ProcessEdge edge:model.getEdges()){
+    	for(ProcessEdge edge:model.getProcessEdges()){
             if(edge instanceof TextLinkEdge){
                 edge.setAlpha(selected ? TextModelBuilder.DEFAULT_EDGE_ALPHA: 0.0f);
             }

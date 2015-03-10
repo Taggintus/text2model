@@ -201,4 +201,9 @@ public abstract class ProcessModel {
 
         return result;
     }
+
+	public ProcessUtils getUtils() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -193,7 +193,7 @@ public abstract class ProcessModel {
     public List<ProcessNode> getSuccessors(ProcessNode n) {
         List<ProcessNode> result = new LinkedList<ProcessNode>();
 
-        for (ProcessEdge e : getEdges()) {
+        for (ProcessEdge e : getProcessEdges()) {//vorher getEdges
             if (e.getSource() == n) {
                 result.add(e.getTarget());
             }

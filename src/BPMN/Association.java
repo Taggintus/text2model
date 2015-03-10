@@ -1,6 +1,7 @@
 package BPMN;
 
 import Nodes.ProcessEdge;
+import Nodes.ProcessNode;
 
 public class Association extends ProcessEdge {
 
@@ -11,8 +12,8 @@ public class Association extends ProcessEdge {
 	    public final static String DIRECTION_BOTH = "BOTH";
 	    public final static String DIRECTION_NONE = "NONE";
 
-	    public Association() {
-	        super();
+	    public Association(ProcessNode source, ProcessNode target) {
+	        super(source, target);
 	        initializeProperties();
 	    }
 	    

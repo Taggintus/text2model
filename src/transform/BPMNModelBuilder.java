@@ -132,7 +132,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			f_model.removeNode(f_mainPool);
 		}		
 		
-		ProcessUtils.sortClusters(f_model);
+		//ProcessUtils.sortClusters(f_model);
 		layoutModel(f_model);
 		layoutModel(f_model);
 		f_parent.setElementMapping(f_elementsMap);

@@ -369,8 +369,8 @@ protected void eventsToLabels() {
 	}
 }
 
-private SequenceFlow removeNode(Action a) {
-	ProcessNode _node = toProcessNode(a);
+private SequenceFlow removeNode(ProcessNode a) {
+	ProcessNode _node = toProcessNode();
 //	if(f_model.getPredecessors(_node).size() == 0) {
 //		//add a start node in front
 //		StartEvent _start = new StartEvent();
@@ -385,6 +385,11 @@ private SequenceFlow removeNode(Action a) {
 	return removeNode(_node);
 }
 
+
+private ProcessNode toProcessNode() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 /**
  * @param actorFrom

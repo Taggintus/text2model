@@ -3,6 +3,7 @@ package Models;
 import java.util.LinkedList;
 import java.util.List;
 
+import processing.ProcessUtils;
 import Nodes.ProcessNode;
 import Nodes.ProcessEdge;
 
@@ -39,6 +40,8 @@ public abstract class ProcessModel {
     public static String PROP_FOLDERALIAS = "#folder";
     /** The last time this model was changed  */
     public static String PROP_LASTCHECKIN = "#LAST_CHECKIN_TIME";
+    /** An instance of a sub-class of ProcessUtils */
+    protected ProcessUtils processUtils = null;
 
     public ProcessModel () {}
     

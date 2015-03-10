@@ -17,7 +17,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import Models.ProcessModel;
 import Nodes.ProcessEdge;
+import Nodes.ProcessNode;
 
 import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilder;
@@ -100,5 +102,24 @@ public abstract class ProcessUtils {
             props.put(key, value);
         }
         return props;
+    }
+    
+    /**
+     * Returns the default edge class for connecting to process nodes. 
+     * @param source
+     * @param target
+     * @return
+     */
+    public abstract ProcessEdge createDefaultEdge(ProcessNode source, ProcessNode target);
+    
+    /**
+     * Returns the list of recommendations for a following ProcessNode based
+     * @param model The ProcessModel
+     * @param node The ProcessNode used for recommandation
+     */
+    
+    public List<Class<? extends ProcessNode>> getNextNodesRecommendation(ProcessModel model, ProcessNode node) {
+        // Return empty list by default, might be overwritten by subclasses.
+        return new LinkedList<Class<? extends ProcessNode>>();
     }
 }

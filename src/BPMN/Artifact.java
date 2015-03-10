@@ -14,8 +14,8 @@ public class Artifact extends FlowObject {
         result.add(DataObject.class);
         result.add(DataStore.class);
         result.add(TextAnnotation.class);
-        result.add(Group.class);
-        result.add(UserArtifact.class);
+        //result.add(Group.class);
+        //result.add(UserArtifact.class);
         return result;
     }
 

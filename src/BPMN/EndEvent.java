@@ -22,14 +22,14 @@ public class EndEvent extends Event {
     public List<Class<? extends ProcessNode>> getVariants() {
         List<Class<? extends ProcessNode>> result = new LinkedList<Class<? extends ProcessNode>>();
         result.add(EndEvent.class);
-        result.add(MessageEndEvent.class);
-        result.add(ErrorEndEvent.class);
-        result.add(EscalationEndEvent.class);
-        result.add(CancelEndEvent.class);
-        result.add(CompensationEndEvent.class);
-        result.add(SignalEndEvent.class);
+        //result.add(MessageEndEvent.class);
+        //result.add(ErrorEndEvent.class);
+        //result.add(EscalationEndEvent.class);
+        //result.add(CancelEndEvent.class);
+        //result.add(CompensationEndEvent.class);
+        //result.add(SignalEndEvent.class);
         result.add(TerminateEndEvent.class);
-        result.add(MultipleEndEvent.class);
+        //result.add(MultipleEndEvent.class);
         return result;
     }
     

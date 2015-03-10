@@ -36,12 +36,21 @@ import java.util.Set;
 
 
 
+
+
+
+
+
 import BPMN.Association;
 import BPMN.DataObject;
 import BPMN.EndEvent;
+import BPMN.EventBasedGateway;
+import BPMN.ExclusiveGateway;
 import BPMN.Gateway;
+import BPMN.InclusiveGateway;
 import BPMN.IntermediateEvent;
 import BPMN.Lane;
+import BPMN.LaneableCluster;
 import BPMN.MessageFlow;
 import BPMN.ParallelGateway;
 import BPMN.Pool;
@@ -59,6 +68,7 @@ import processing.ProcessUtils;
 import processing.ProcessingUtils;
 import processing.WordNetWrapper;
 import processing.FrameNetWrapper.PhraseType;
+import tools.Configuration;
 import worldModel.Action;
 import worldModel.Actor;
 import worldModel.ExtractedObject;
@@ -76,6 +86,41 @@ import worldModel.Specifier.SpecifierType;
  *
  */
 public class BPMNModelBuilder extends ProcessModelBuilder {
+	
+	private Configuration f_config = Configuration.getInstance();
+	
+	//Nodes
+	private final boolean EVENTS_TO_LABELS = true;
+	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
+	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
+	//Labeling
+	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));
+	private final int MAX_NAME_DEPTH = 3;
+	//Model in General
+	private final boolean BUILD_BLACK_BOX_POOL_COMMUNICATION = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_BB_POOLS));
+	private final boolean BUILD_DATA_OBJECTS = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_DATA_OBJECTS));
+	
+	
+	
+	private TextToProcess f_parent;
+	
+	private BPMNModel f_model = new BPMNModel("generated Model");
+	
+	
+	private HashMap<Actor, String> f_ActorToName = new HashMap<Actor, String>();
+	private HashMap<String, Lane> f_NameToPool = new HashMap<String, Lane>();		
+	private HashMap<Action, FlowObject> f_elementsMap = new HashMap<Action, FlowObject>();
+	private HashMap<FlowObject, Action> f_elementsMap2 = new HashMap<FlowObject,Action>();
+	
+	private ArrayList<FlowObject> f_notAssigned = new ArrayList<FlowObject>();
+	private Lane f_lastPool = null;
+	private LaneableCluster f_mainPool;
+	
+	//for black box pools
+	private HashMap<ProcessNode,String> f_CommLinks = new HashMap<ProcessNode, String>();
+	private HashMap<String, Pool> f_bbPoolcache = new HashMap<String, Pool>();
+
+	
 	
 	public BPMNModelBuilder(TextToProcess parent) {
 		super(parent);
@@ -146,7 +191,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 								//connect to other Node
 								ProcessNode _target = f_elementsMap.get(_b);
 								Association _asc = new Association(_do,_target);
-								f_model.addEdge(_asc);	
+								f_model.addProcessEdge(_asc);	
 								put(_handeledDOs,_a,s);
 								put(_handeledDOs,_b,s);
 							}
@@ -174,10 +219,10 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			_lane.addProcessNode(_do);			
 			if(arriving) {
 				Association _asc = new Association(_do,_target);
-				f_model.addEdge(_asc);
+				f_model.addProcessEdge(_asc);
 			}else {
 				Association _asc = new Association(_target,_do);
-				f_model.addEdge(_asc);
+				f_model.addProcessEdge(_asc);
 			}
 			return _do;
 		}
@@ -233,7 +278,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 				 _t.setStereotype(Task.TYPE_SEND);
 				}
 				MessageFlow _msf = new MessageFlow(_t,_bbP);
-				f_model.addEdge(_msf);
+				f_model.addProcessEdge(_msf);
 			}
 		}else {
 			if(_sender != null && !f_NameToPool.containsKey(getName(_sender.getObject(), false))) {
@@ -245,7 +290,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 					Task _t = ((Task)f_elementsMap.get(a));
 					_t.setStereotype(Task.TYPE_SEND);
 					MessageFlow _msf = new MessageFlow(_t,_bbP);
-					f_model.addEdge(_msf);
+					f_model.addProcessEdge(_msf);
 				}	
 			}else if(_receiver != null && !f_NameToPool.containsKey(getName(_receiver.getObject(), false))){
 				String _name = getName(_receiver.getObject(), false);
@@ -259,7 +304,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 						_t.setStereotype(Task.TYPE_RECEIVE);
 					}
 					MessageFlow _msf = new MessageFlow(_bbP,_rpn);
-					f_model.addEdge(_msf);
+					f_model.addProcessEdge(_msf);
 				}
 			}
 		}
@@ -472,7 +517,7 @@ private void finishDanglingEnds() {
 				SequenceFlow _sqf = new SequenceFlow();
 				_sqf.setSource(toProcessNode(f.getSingleObject()));
 				_sqf.setTarget(toProcessNode(f.getMultipleObjects().get(0)));
-				f_model.addEdge(_sqf);
+				f_model.addProcessEdge(_sqf);
 			}else {
 				if(f.getType() == FlowType.exception) {
 					ErrorIntermediateEvent _exc = new ErrorIntermediateEvent();
@@ -484,7 +529,7 @@ private void finishDanglingEnds() {
 					SequenceFlow _sqf = new SequenceFlow();
 					_sqf.setSource(_exc);
 					_sqf.setTarget(toProcessNode(f.getMultipleObjects().get(0)));
-					f_model.addEdge(_sqf);
+					f_model.addProcessEdge(_sqf);
 				}else {
 					//is it a split?
 					//create flow from single to gateway
@@ -498,7 +543,7 @@ private void finishDanglingEnds() {
 							SequenceFlow _sf = new SequenceFlow();
 							_sf.setSource(_gate);
 							_sf.setTarget(toProcessNode(action));
-							f_model.addEdge(_sf);
+							f_model.addProcessEdge(_sf);
 						}					
 					}else if(f.getDirection() == FlowDirection.join) {
 						_sf1.setSource(_gate);
@@ -508,10 +553,10 @@ private void finishDanglingEnds() {
 							SequenceFlow _sf = new SequenceFlow();
 							_sf.setSource(toProcessNode(action));
 							_sf.setTarget(_gate);
-							f_model.addEdge(_sf);
+							f_model.addProcessEdge(_sf);
 						}	
 					}
-					f_model.addEdge(_sf1);
+					f_model.addProcessEdge(_sf1);
 				}
 			}
 		}

@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import Nodes.Cluster;
-import net.frapu.code.visualization.Configuration;
-import net.frapu.code.visualization.LayoutUtils;
+//import net.frapu.code.visualization.Configuration;
+//import net.frapu.code.visualization.LayoutUtils;
 import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 import processing.ProcessUtils;
@@ -46,7 +46,7 @@ import BPMN.Task;
 
 import transform.AnalyzedSentence;
 
-import com.inubit.research.layouter.gridLayouter.GridLayouter;
+//import com.inubit.research.layouter.gridLayouter.GridLayouter;
 
 import etc.Constants;
 import etc.TextToProcess;
@@ -131,7 +131,7 @@ public ProcessModelBuilder(TextToProcess parent) {
  * @param _a
  * @return
  */
-private Set<String> getDataObjectCandidates(SpecifiedElement ob) {
+protected Set<String> getDataObjectCandidates(SpecifiedElement ob) {
 	if(ob == null) {
 		return new HashSet<String>(0);
 	}		
@@ -183,7 +183,7 @@ public Map<ProcessNode, String> getCommLinks(){
  * @param specifiers
  * @return
  */
-private Specifier containedReceiver(List<Specifier> specifiers) {
+protected Specifier containedReceiver(List<Specifier> specifiers) {
 	return containsFrameElement(specifiers,ListUtils.getList("Donor","Source"));
 }
 
@@ -191,7 +191,7 @@ private Specifier containedReceiver(List<Specifier> specifiers) {
  * @param specifiers
  * @return
  */
-private Specifier containedSender(List<Specifier> specifiers) {
+protected Specifier containedSender(List<Specifier> specifiers) {
 	return containsFrameElement(specifiers,ListUtils.getList("Addressee","Recipient"));
 }
 
@@ -259,7 +259,7 @@ private void processMetaActivities(WorldModel world) {
  * @param world 
  * 
  */
-private void removeDummies(WorldModel world) {
+protected void removeDummies(WorldModel world) {
 	for(Action a:world.getActions()) {
 		if(a instanceof DummyAction || a.getTransient()) {
 			removeNode(a);
@@ -275,7 +275,7 @@ private void removeDummies(WorldModel world) {
  * @param a
  * @return
  */
-private String getEventText(Action a) {
+protected String getEventText(Action a) {
 	StringBuilder _b = new StringBuilder();
 	boolean _actorPlural = false;
 	if(a.getActorFrom() != null) {
@@ -334,9 +334,9 @@ private String getEventText(Action a) {
 /**
  * 
  */
-private void eventsToLabels() {
+protected void eventsToLabels() {
 	for(ProcessNode node:new ArrayList<ProcessNode>(f_model.getNodes())) {
-		if(node instanceof Gateway || node instanceof ErrorIntermediateEvent) {
+		if(node instanceof Gateway) {
 			List<ProcessNode> _succs = f_model.getSuccessors(node);
 			for(ProcessNode _succ : _succs) {
 				if(_succ.getClass().getSimpleName().equals("IntermediateEvent")) { //only simple intermediate events
@@ -369,13 +369,28 @@ private void eventsToLabels() {
 	}
 }
 
+private SequenceFlow removeNode(Action a) {
+	ProcessNode _node = toProcessNode(a);
+//	if(f_model.getPredecessors(_node).size() == 0) {
+//		//add a start node in front
+//		StartEvent _start = new StartEvent();
+//		f_model.addNode(_start);
+//		Cluster _lane = f_model.getClusterForNode(_node);
+//		if(_lane != null) {
+//			_lane.addProcessNode(_start);
+//		}
+//		SequenceFlow _sqf = new SequenceFlow(_start,_node);
+//		f_model.addFlow(_sqf);
+//	}
+	return removeNode(_node);
+}
 
 
 /**
  * @param actorFrom
  * @return
  */
-private boolean hasHiddenAction(ExtractedObject obj) {
+protected boolean hasHiddenAction(ExtractedObject obj) {
 	boolean _canBeGerund = false;
 	for(Specifier spec:obj.getSpecifiers(SpecifierType.PP)) {
 		if(spec.getName().startsWith("of")) {
@@ -399,7 +414,7 @@ private boolean hasHiddenAction(ExtractedObject obj) {
  * @param f
  * @param gate
  */
-private void addToPrevalentLane(Flow f, Gateway gate) {
+protected void addToPrevalentLane(Flow f, Gateway gate) {
 	HashMap<Lane, Integer> _countMap = new HashMap<Lane, Integer>();
 	if(!(f.getSingleObject() instanceof DummyAction)) {
 		Lane _lane1 = getLaneForNode(toProcessNode(f.getSingleObject()));
@@ -624,7 +639,7 @@ private String transformToAction(ExtractedObject obj) {
 	return _b.toString();
 }
 
-private String getName(ExtractedObject a,boolean addDet) {
+protected String getName(ExtractedObject a,boolean addDet) {
 	return getName(a, addDet, 1);
 }
 
@@ -633,7 +648,7 @@ private String getName(ExtractedObject a,boolean addDet,int level) {
 }
 
 
-private void addSpecifier(int level, StringBuilder _b, Specifier s,boolean compact) {
+protected void addSpecifier(int level, StringBuilder _b, Specifier s,boolean compact) {
 	_b.append(' ');
 	if(s.getObject() != null) {
 		_b.append(s.getHeadWord());

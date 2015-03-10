@@ -7,12 +7,11 @@
  */
 package etc;
 
-import net.frapu.code.visualization.bpmn.BPMNModel;
-import net.frapu.code.visualization.bpmn.FlowObject;
 
+import Models.BPMNModel;
+import Nodes.FlowObject;
 import textModel.TextModel;
 import worldModel.SpecifiedElement;
-
 import edu.stanford.nlp.trees.Tree;
 
 /**

@@ -20,10 +20,6 @@ import java.util.Timer;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
-import com.inubit.research.gui.SplashScreen;
-import com.inubit.research.gui.Workbench;
-import com.inubit.research.gui.plugins.WorkbenchPlugin;
-import com.inubit.research.textToProcess.gui.T2Pgui;
 
 
 

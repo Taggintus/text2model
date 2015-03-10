@@ -1,11 +1,11 @@
 package EPC;
 
-import Nodes.ProcessNode;
+import Nodes.FlowObject;
 
-public class InformationObject extends ProcessNode {
+public class InformationObject extends FlowObject {
 
-	public InformationObject (String name) {
-		super(name);
+	public InformationObject () {
+		super();
 	}
 	
 }

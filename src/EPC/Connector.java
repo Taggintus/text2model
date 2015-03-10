@@ -1,13 +1,9 @@
 package EPC;
 
-import Nodes.ProcessNode;
+import Nodes.FlowObject;
 
-public class Connector extends ProcessNode{
+public class Connector extends FlowObject{
 
-	public Connector (String name) {
-		super(name);
-	}
-	
 	public Connector () {
 		super();
 	}

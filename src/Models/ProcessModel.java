@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import processing.ProcessUtils;
 import Nodes.AttachedNode;
 import Nodes.Cluster;
+import Nodes.EdgeDocker;
 import Nodes.ProcessNode;
 import Nodes.ProcessEdge;
 import Nodes.ProcessObject;
@@ -1083,5 +1084,36 @@ public abstract class ProcessModel implements Cloneable {
         // Mark as dirty
         markAsDirty(true);
         ProcessUtils.sortTopologically(this);
+    }
+    
+    /**
+     * Removes a process edge from the model.
+     * @param f
+     */
+    public synchronized void removeEdge(ProcessEdge f) {
+        processEdges.remove(f);
+        f.removeContext(this);
+        // Mark as dirty
+        markAsDirty(true);
+        // Check if any EdgeDocker contained this node; if so, remove it too
+        List<ProcessNode> removalList = new LinkedList<ProcessNode>();
+        for (ProcessNode node : getNodes()) {
+            if (node instanceof EdgeDocker) {
+                EdgeDocker docker = (EdgeDocker) node;
+                if (docker.getDockedEdge() == f) {
+                    removalList.add(docker);
+                }
+            }
+        }
+        if (f.getTarget() instanceof EdgeDocker) {
+            this.removeNode(f.getTarget());
+        }
+        if (f.getSource() instanceof EdgeDocker) {
+            this.removeNode(f.getSource());
+        }
+        // Remove dockers
+        for (ProcessNode n : removalList) {
+            removeNode(n);
+        }
     }
 }

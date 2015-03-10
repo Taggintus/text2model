@@ -312,10 +312,10 @@ public class TextModelControler extends ProcessUtils {
 		addReferenceToTextAnalyzer(edge);		
 		//only possibility, an edge was added by our reference repointing
 		if(f_edge != null) {
-			for(ProcessEdge e:new ArrayList<ProcessEdge>(f_model.getProcessEdges())) { //war vorher getEdge
+			for(ProcessEdge e:new ArrayList<ProcessEdge>(f_model.getEdges())) {
 				if(e != f_edge) {
 					if(e.getSource().equals(f_edge.getSource())) {
-						f_model.removeProcessEdge(e);
+						f_model.removeEdge(e);
 					}
 				}
 			}

@@ -17,30 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import BPMN.Association;
 import BPMN.DataObject;
 import BPMN.EndEvent;
@@ -55,6 +31,7 @@ import BPMN.MessageFlow;
 import BPMN.ParallelGateway;
 import BPMN.Pool;
 import BPMN.SequenceFlow;
+import BPMN.StartEvent;
 import BPMN.Task;
 import Models.BPMNModel;
 import Models.ProcessModel;

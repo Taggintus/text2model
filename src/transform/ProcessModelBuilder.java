@@ -37,13 +37,12 @@ import BPMN.IntermediateEvent;
 import BPMN.Lane;
 import BPMN.LaneableCluster;
 import BPMN.MessageFlow;
-
 import BPMN.ParallelGateway;
 import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
-
+import tools.Configuration;
 import transform.AnalyzedSentence;
 
 //import com.inubit.research.layouter.gridLayouter.GridLayouter;
@@ -115,7 +114,7 @@ public abstract class ProcessModelBuilder {
  * @param s
  */
 
-private void put(HashMap<Action, List<String>> os, Action a, String dataObj) {
+protected void put(HashMap<Action, List<String>> os, Action a, String dataObj) {
 	if(!os.containsKey(a)) {
 		LinkedList<String> _list = new LinkedList<String>();
 		os.put(a, _list);
@@ -218,7 +217,7 @@ private Specifier containsFrameElement(List<Specifier> specifiers,
  * @param world 
  * 
  */
-private void processMetaActivities(WorldModel world) {
+protected void processMetaActivities(WorldModel world) {
 	for(Action a:world.getActions()) {
 		if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()) {					
 			if(WordNetWrapper.isVerbOfType(a.getName(),"end")){
@@ -440,7 +439,7 @@ protected void addToPrevalentLane(Flow f, Gateway gate) {
 /**
  * @return
  */
-private String createTaskText(Action a) {
+protected String createTaskText(Action a) {
 	StringBuilder _b = new StringBuilder();		
 	if(a.isNegated()) {
 		if(a.getAux() != null) {

@@ -7,29 +7,16 @@
  */
 package textModel;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.inubit.research.layouter.ProcessLayouter;
+import Nodes.ProcessEdge;
+import Nodes.ProcessNode;
+import processing.ProcessUtils;
 
-import net.frapu.code.visualization.ProcessEdge;
-import net.frapu.code.visualization.ProcessNode;
-import net.frapu.code.visualization.ProcessUtils;
-
-/**
- * @author ff
- *
- */
 public class TextModelUtils extends ProcessUtils {
 
 	@Override
 	public ProcessEdge createDefaultEdge(ProcessNode source, ProcessNode target) {
 		return null;
-	}
-
-	@Override
-	public List<ProcessLayouter> getLayouters() {
-		return new ArrayList<ProcessLayouter>(0);
 	}
 
 }

@@ -7,23 +7,15 @@
  */
 package textModel;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTextField;
-
-import net.frapu.code.visualization.Cluster;
-import net.frapu.code.visualization.Dragable;
-import net.frapu.code.visualization.ProcessEdge;
-import net.frapu.code.visualization.ProcessEditorListener;
-import net.frapu.code.visualization.ProcessModel;
-import net.frapu.code.visualization.ProcessModelListener;
-import net.frapu.code.visualization.ProcessNode;
-import net.frapu.code.visualization.ProcessObject;
-import net.frapu.code.visualization.ProcessUtils;
-
-import com.inubit.research.layouter.ProcessLayouter;
+import Models.ProcessModel;
+import Nodes.Cluster;
+import Nodes.ProcessEdge;
+import Nodes.ProcessNode;
+import Nodes.ProcessObject;
+import processing.ProcessUtils;
 import etc.SentenceWordID;
 import etc.TextToProcess;
 import transform.AnalyzedSentence;
@@ -42,7 +34,7 @@ import worldModel.Specifier.SpecifierType;
  * @author ff
  *
  */
-public class TextModelControler extends ProcessUtils implements ProcessEditorListener, ProcessModelListener  {
+public class TextModelControler extends ProcessUtils {
 
 	
 	private TextAnalyzer f_analyzer;
@@ -60,23 +52,8 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 	public void setTextToprocess(TextToProcess parent) {
 		f_parent = parent;	
 	}
-	
-	@Override
-	public void modelChanged(ProcessModel m) {
-		
-	}
 
-	@Override
-	public void processNodeEditingFinished(ProcessNode o) {
-	}
-
-	@Override
-	public void processNodeEditingStarted(ProcessNode o, JTextField textfield) {
-	}
-
-	@Override
 	public void processObjectClicked(ProcessObject o) {
-		resetColors();
 		if(o instanceof ProcessNode) {
 			if(o instanceof WordNode) {
 				SpecifiedElement _element = getElement((ProcessNode)o);
@@ -100,26 +77,16 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 	 */
 	private void highlightAll() {
 		for(Actor ac:f_analyzer.getWorld().getActors()) {
-			highlightElement(f_builder.getSentenceNode(ac.getOrigin()), getColorActor(0), ac,false);
+			highlightElement(f_builder.getSentenceNode(ac.getOrigin()), ac,false);
 		}
 		for(Resource ac:f_analyzer.getWorld().getResources()) {
-			highlightElement(f_builder.getSentenceNode(ac.getOrigin()), getColorObject(0), ac,false);
+			highlightElement(f_builder.getSentenceNode(ac.getOrigin()), ac,false);
 		}
 		for(Action ac:f_analyzer.getWorld().getActions()) {
 			if(!(ac instanceof DummyAction)) {
-				highlightAction(f_builder.getSentenceNode(ac.getOrigin()), getColorAction(0), ac,false);
+				highlightAction(f_builder.getSentenceNode(ac.getOrigin()), ac,false);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 */
-	private void resetColors() {
-		for(ProcessNode pn:f_highlightCache) {
-			pn.setBackground(Color.WHITE);
-		}
-		f_highlightCache.clear();
 	}
 
 	/**
@@ -130,71 +97,63 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 		List<Action> _actions = _sentence.getExtractedActions();
 		for(int i=0;i<_actions.size();i++) {
 			Action _a =_actions.get(i);
-			highlightAction(_sn, getColorAction(i), _a,true);
-			highlightElement(_sn, getColorActor(i), _a.getActorFrom(),true);
-			Color _cObj = _a.getObject() instanceof Actor ? getColorActor(i) : getColorObject(i);
-			highlightElement(_sn, _cObj, _a.getObject(),true);
+			highlightAction(_sn, _a,true);
+			highlightElement(_sn, _a.getActorFrom(),true);
+			highlightElement(_sn, _a.getObject(),true);
 		}
 	}
 
-	private void highlightElement(SentenceNode _sn, Color c, ExtractedObject a,boolean highlightDependants) {
+	private void highlightElement(SentenceNode _sn, ExtractedObject a,boolean highlightDependants) {
 		//highlighting Element
 		if(a != null) {
 			if(highlightDependants) {
 				ProcessNode _pn = getElement(_sn,a.getDeterminer(),a.getWordIndex()-1);
 				if(_pn != null) {
-					_pn.setBackground(c);
 					f_highlightCache.add(_pn);
 				}			
 			}
-			highlightSpecifiedElement(_sn, c, a,highlightDependants);
+			highlightSpecifiedElement(_sn, a,highlightDependants);
 		}
 	}
 	
 	public void highlightAction (Action a) {
-		resetColors();
 		SentenceNode _sn = f_builder.getSentenceNode(a.getOrigin());
-		highlightAction(_sn, getColorAction(0), a, true );
+		highlightAction(_sn, a, true );
 	}
 	
-	private void highlightAction(SentenceNode _sn, Color c, Action a,boolean highlightDependants) {
+	private void highlightAction(SentenceNode _sn, Action a,boolean highlightDependants) {
 		//highlighting Element
 		if(a != null) {
 			if(highlightDependants) {
 				ProcessNode _pn = getElement(_sn,a.getAux(),a.getWordIndex()-1);
 				if(_pn != null) {
-					_pn.setBackground(c);
 					f_highlightCache.add(_pn);
 				}	
 				_pn = getElement(_sn,a.getCop(),a.getWordIndex()-1);
 				if(_pn != null) {
-					_pn.setBackground(c);
 					f_highlightCache.add(_pn);
 				}
 				_pn = getElement(_sn,a.getPrt(),a.getWordIndex()-1);
 				if(_pn != null) {
-					_pn.setBackground(c);
 					f_highlightCache.add(_pn);
 				}
 				_pn = getElement(_sn,a.getMod(),a.getModPos());
 				if(_pn != null) {
-					_pn.setBackground(c);
 					f_highlightCache.add(_pn);
 				}
 				if(a.getXcomp() != null) {
-					highlightAction(_sn, getColorAction(4), a.getXcomp(),highlightDependants);
+					highlightAction(_sn, a.getXcomp(),highlightDependants);
 				}
 			}
-			highlightSpecifiedElement(_sn, c, a,highlightDependants);
+			highlightSpecifiedElement(_sn, a,highlightDependants);
 		}
 	}
 	
 
-	private void highlightSpecifiedElement(SentenceNode _sn, Color c, SpecifiedElement a,boolean highlightDependants) {
+	private void highlightSpecifiedElement(SentenceNode _sn, SpecifiedElement a,boolean highlightDependants) {
 		ProcessNode _pn;
 		
-		_pn = _sn.getProcessNodes().get(a.getWordIndex()-1);
-		_pn.setBackground(c);
+		_pn = _sn.getProcessNodes().get(a.getWordIndex()-1);;
 		f_highlightCache.add(_pn);			
 		
 		if(highlightDependants) {
@@ -209,7 +168,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 					if(_pn == null) {
 						System.err.println("error! Could not find node for: "+str);
 					}else {
-						_pn.setBackground(c);
 						f_highlightCache.add(_pn);
 					}
 				}
@@ -255,39 +213,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * produces greenish pastel colors
-	 * @param i
-	 * @return
-	 */
-	public static Color getColorActor(int i) {
-		int val1 = Math.min(255, 225+i*8);
-		int val2 = Math.min(255,168+i*22);
-		return new Color(val1,val1,val2);
-	}
-	
-	/**
-	 * produces greenish pastel colors
-	 * @param i
-	 * @return
-	 */
-	public static Color getColorObject(int i) {
-		int val1 = Math.min(255, 144+i*14);
-		int val2 = Math.min(255, 255);
-		return new Color(val1,val1,val2);
-	}
-	
-	/**
-	 * produces greenish pastel colors
-	 * @param i
-	 * @return
-	 */
-	public static Color getColorAction(int i) {
-		int val1 = Math.min(255, 187+i*9);
-		int val2 = Math.min(255, 125+i*17);
-		return new Color(255,val1,val2);
 	}
 
 	/**
@@ -346,15 +271,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 		return null;
 	}
 
-	@Override
-	public void processObjectDoubleClicked(ProcessObject o) {
-	}
-
-	@Override
-	public void processObjectDragged(Dragable o, int oldX, int oldY) {
-		System.out.println(o);
-	}
-
 	/**
 	 * @param pgui 
 	 * @param world
@@ -380,8 +296,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 				_spec = getElement(target);
 				if(_spec instanceof ExtractedObject) {
 					f_edge = new TextEdge();
-					f_edge.setColor(TextModelBuilder.COLOR_REFERENCE_EDGES);
-					f_edge.setAlpha(TextModelBuilder.DEFAULT_EDGE_ALPHA);
 					f_edge.setSource(source);
 					f_edge.setTarget(target);
 					return f_edge;
@@ -391,12 +305,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 		return null;
 	}
 
-	@Override
-	public List<ProcessLayouter> getLayouters() {
-		return new ArrayList<ProcessLayouter>(0);
-	}
-
-	@Override
 	public void processEdgeAdded(ProcessEdge edge) {
 		addReferenceToTextAnalyzer(edge);		
 		//only possibility, an edge was added by our reference repointing
@@ -420,23 +328,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
 		SpecifiedElement _to = getElement(edge.getTarget());
 		f_processor.addManualReferenceResolution(new SentenceWordID(_from),new SentenceWordID(_to));
 	}
-
-	@Override
-	public void processEdgeRemoved(ProcessEdge edge) {
-	}
-
-	@Override
-	public void processNodeAdded(ProcessNode newNode) {
-	}
-
-	@Override
-	public void processNodeRemoved(ProcessNode remNode) {
-	}
-
-	@Override
-	public void processObjectPropertyChange(ProcessObject obj, String name,
-			String oldValue, String newValue) {
-	}
 	
 	public void setShowLinks(ProcessModel model, boolean selected) {
 		f_showLinks = selected;
@@ -445,15 +336,6 @@ public class TextModelControler extends ProcessUtils implements ProcessEditorLis
                 edge.setAlpha(selected ? TextModelBuilder.DEFAULT_EDGE_ALPHA: 0.0f);
             }
         }
-    }
-
-    public void setShowReferences(ProcessModel model, boolean selected) {
-    	f_showRefs = selected;
-    	for(ProcessEdge edge:model.getEdges()){
-           if(!(edge instanceof TextLinkEdge)){
-               edge.setAlpha(selected ? TextModelBuilder.DEFAULT_EDGE_ALPHA: 0.0f);
-           }
-    	}
     }
 
 

@@ -7,11 +7,8 @@
  */
 package textModel;
 
-import java.awt.Shape;
-import java.awt.Stroke;
+import Nodes.ProcessEdge;
 
-import net.frapu.code.visualization.ProcessEdge;
-import net.frapu.code.visualization.ProcessUtils;
 
 /**
  * @author ff
@@ -25,21 +22,6 @@ public class TextEdge extends ProcessEdge {
 	 */
 	public TextEdge() {
 		super();
-	}
-	
-	@Override
-	public Stroke getLineStroke() {
-		return ProcessUtils.defaultStroke;
-	}
-
-	@Override
-	public Shape getSourceShape() {
-		return null;
-	}
-
-	@Override
-	public Shape getTargetShape() {
-		return ProcessUtils.standardArrowFilled;
 	}
 
 }

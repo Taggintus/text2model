@@ -3,6 +3,7 @@ package textModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import processing.ProcessUtils;
 import Nodes.ProcessEdge;
 import Models.ProcessModel;
 import Nodes.ProcessNode;

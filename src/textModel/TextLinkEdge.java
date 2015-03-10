@@ -7,9 +7,6 @@
  */
 package textModel;
 
-import java.awt.Stroke;
-
-import net.frapu.code.visualization.ProcessUtils;
 
 /**
  * @author ff
@@ -17,8 +14,5 @@ import net.frapu.code.visualization.ProcessUtils;
  */
 public class TextLinkEdge extends TextEdge {
 
-	@Override
-	public Stroke getLineStroke() {
-		return ProcessUtils.dottedDashedStroke;
-	}
+	
 }

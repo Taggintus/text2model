@@ -171,7 +171,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 								//connect to other Node
 								ProcessNode _target = f_elementsMap.get(_b);
 								Association _asc = new Association(_do,_target);
-								f_model.addProcessEdge(_asc);	
+								f_model.addEdge(_asc);	
 								put(_handeledDOs,_a,s);
 								put(_handeledDOs,_b,s);
 							}
@@ -199,10 +199,10 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			_lane.addProcessNode(_do);			
 			if(arriving) {
 				Association _asc = new Association(_do,_target);
-				f_model.addProcessEdge(_asc);
+				f_model.addEdge(_asc);
 			}else {
 				Association _asc = new Association(_target,_do);
-				f_model.addProcessEdge(_asc);
+				f_model.addEdge(_asc);
 			}
 			return _do;
 		}
@@ -258,7 +258,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 				 _t.setStereotype(Task.TYPE_SEND);
 				}
 				MessageFlow _msf = new MessageFlow(_t,_bbP);
-				f_model.addProcessEdge(_msf);
+				f_model.addEdge(_msf);
 			}
 		}else {
 			if(_sender != null && !f_NameToPool.containsKey(getName(_sender.getObject(), false))) {
@@ -270,7 +270,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 					Task _t = ((Task)f_elementsMap.get(a));
 					_t.setStereotype(Task.TYPE_SEND);
 					MessageFlow _msf = new MessageFlow(_t,_bbP);
-					f_model.addProcessEdge(_msf);
+					f_model.addEdge(_msf);
 				}	
 			}else if(_receiver != null && !f_NameToPool.containsKey(getName(_receiver.getObject(), false))){
 				String _name = getName(_receiver.getObject(), false);
@@ -284,7 +284,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 						_t.setStereotype(Task.TYPE_RECEIVE);
 					}
 					MessageFlow _msf = new MessageFlow(_bbP,_rpn);
-					f_model.addProcessEdge(_msf);
+					f_model.addEdge(_msf);
 				}
 			}
 		}
@@ -426,7 +426,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		
 		ProcessNode _pre = null;
 		ProcessNode _succ = null;
-		for(ProcessEdge edge:f_model.getProcessEdges()) { //war vorher getEdges
+		for(ProcessEdge edge:f_model.getEdges()) { //war vorher getEdges
 			if(edge.getTarget().equals(node)) {
 				_pre = edge.getSource();
 			}
@@ -455,7 +455,7 @@ private void finishDanglingEnds() {
 			//has to be the source somewhere
 			int _inC = 0;
 			int _outC = 0;
-			for(ProcessEdge e:f_model.getProcessEdges()) {
+			for(ProcessEdge e:f_model.getEdges()) {
 				if(e.getSource().equals(node)) {
 					_outC++;
 				}else if (e.getTarget().equals(node)) {
@@ -497,7 +497,7 @@ private void finishDanglingEnds() {
 				SequenceFlow _sqf = new SequenceFlow();
 				_sqf.setSource(toProcessNode(f.getSingleObject()));
 				_sqf.setTarget(toProcessNode(f.getMultipleObjects().get(0)));
-				f_model.addProcessEdge(_sqf);
+				f_model.addEdge(_sqf);
 			}else {
 				if(f.getType() == FlowType.exception) {
 					ErrorIntermediateEvent _exc = new ErrorIntermediateEvent();
@@ -509,7 +509,7 @@ private void finishDanglingEnds() {
 					SequenceFlow _sqf = new SequenceFlow();
 					_sqf.setSource(_exc);
 					_sqf.setTarget(toProcessNode(f.getMultipleObjects().get(0)));
-					f_model.addProcessEdge(_sqf);
+					f_model.addEdge(_sqf);
 				}else {
 					//is it a split?
 					//create flow from single to gateway
@@ -523,7 +523,7 @@ private void finishDanglingEnds() {
 							SequenceFlow _sf = new SequenceFlow();
 							_sf.setSource(_gate);
 							_sf.setTarget(toProcessNode(action));
-							f_model.addProcessEdge(_sf);
+							f_model.addEdge(_sf);
 						}					
 					}else if(f.getDirection() == FlowDirection.join) {
 						_sf1.setSource(_gate);
@@ -533,10 +533,10 @@ private void finishDanglingEnds() {
 							SequenceFlow _sf = new SequenceFlow();
 							_sf.setSource(toProcessNode(action));
 							_sf.setTarget(_gate);
-							f_model.addProcessEdge(_sf);
+							f_model.addEdge(_sf);
 						}	
 					}
-					f_model.addProcessEdge(_sf1);
+					f_model.addEdge(_sf1);
 				}
 			}
 		}

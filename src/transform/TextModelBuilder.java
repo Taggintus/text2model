@@ -84,7 +84,7 @@ public class TextModelBuilder {
 //					_edge.setAlpha(TextModelBuilder.DEFAULT_EDGE_ALPHA);
 					_edge.setSource(_start);
 					_edge.setTarget(_end);
-					_result.addProcessEdge(_edge);
+					_result.addEdge(_edge);
 				}else {
 //					_start.setBackground(new Color(255,200,200));
 				}
@@ -102,7 +102,7 @@ public class TextModelBuilder {
 //			_edge.setAlpha(0.5f);
 			_edge.setSource(_aNode);
 			_edge.setTarget(_bNode);
-			_result.addProcessEdge(_edge);		//war vorher addEdge			
+			_result.addEdge(_edge);				
 		}
 		return _result;
 		

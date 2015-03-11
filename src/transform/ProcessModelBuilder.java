@@ -236,11 +236,11 @@ protected void processMetaActivities(WorldModel world) {
 					removeNode(a);
 					if(a.getName().equals("terminate") && _succs.size()==1) {
 						EndEvent _ee = (EndEvent) _succs.get(0);
-						try {
+						/*try {
 							ProcessUtils.refactorNode(f_model, _ee, TerminateEndEvent.class);
 						}catch(Exception ex) {
 							ex.printStackTrace();
-						}
+						}*/
 					}
 //				}					
 			}else if(WordNetWrapper.isVerbOfType(a.getName(),"start")) {
@@ -370,7 +370,7 @@ protected void eventsToLabels() {
 }
 
 private SequenceFlow removeNode(Action a) {
-	ProcessNode _node = toProcessNode();
+	ProcessNode _node = toProcessNode(a);
 //	if(f_model.getPredecessors(_node).size() == 0) {
 //		//add a start node in front
 //		StartEvent _start = new StartEvent();
@@ -382,7 +382,34 @@ private SequenceFlow removeNode(Action a) {
 //		SequenceFlow _sqf = new SequenceFlow(_start,_node);
 //		f_model.addFlow(_sqf);
 //	}
-	return removeNode(a);
+	return removeNode(_node);
+}
+
+/**
+ * removes a node from the model but keeps the predecessor and successor connected
+ * @param a
+ * 
+ */
+private SequenceFlow removeNode(ProcessNode node) {
+	//remove this action and connect both nodes
+	
+	ProcessNode _pre = null;
+	ProcessNode _succ = null;
+	for(ProcessEdge edge:f_model.getEdges()) {
+		if(edge.getTarget().equals(node)) {
+			_pre = edge.getSource();
+		}
+		if(edge.getSource().equals(node)) {
+			_succ = edge.getTarget();
+		}
+	}
+	f_model.removeNode(node);
+	if(_pre != null && _succ != null) {
+		SequenceFlow _sqf = new SequenceFlow(_pre,_succ);
+		f_model.addFlow(_sqf);
+		return _sqf;
+	}
+	return null;
 }
 
 
@@ -415,32 +442,7 @@ protected boolean hasHiddenAction(ExtractedObject obj) {
 	return false;
 }
 
-/**
- * @param f
- * @param gate
- */
-protected void addToPrevalentLane(Flow f, Gateway gate) {
-	HashMap<Lane, Integer> _countMap = new HashMap<Lane, Integer>();
-	if(!(f.getSingleObject() instanceof DummyAction)) {
-		Lane _lane1 = getLaneForNode(toProcessNode(f.getSingleObject()));
-		_countMap.put(_lane1, 1);
-	}
-	for(Action a:f.getMultipleObjects()) {
-		if(!(a instanceof DummyAction)) {
-			Lane _lane = getLaneForNode(toProcessNode(a));
-			if(_countMap.containsKey(_lane)) {
-				_countMap.put(_lane,_countMap.get(_lane)+1);
-			}else {
-				_countMap.put(_lane, 1);
-			}
-		}
-	}
-	Lane _best = (Lane) SearchUtils.getMaxCountElement(_countMap);
-	//if best is null, there simply is no lane in the process!
-	if(_best != null) {
-		_best.addProcessNode(gate);
-	}
-}
+
 
 /**
  * @return
@@ -676,5 +678,37 @@ public abstract void buildDataObjects(WorldModel world);
 public abstract DataObject createDataObject(Action targetAc,String doName,boolean arriving);
 
 public abstract String getName(ExtractedObject a,boolean addDet,int level,boolean compact);
+
+private FlowObject toProcessNode(Action a) {
+	
+	FlowObject _obj = f_elementsMap.get(a);
+	if(_obj == null) {
+		if(a instanceof DummyAction) {
+			Task _t = new Task();
+			_t.setText("Dummy Task");
+			f_elementsMap.put(a, _t);
+			f_elementsMap2.put(_t, a);
+			return _t;
+		}
+		System.out.println("error no flowobject found!");
+	}
+	return _obj;
+}
+
+/**
+ * @param a
+ * @return
+ */
+private boolean canBeTransformed(Action a) {
+	if(a.getObject() != null && !ProcessingUtils.isUnrealActor(a.getObject()) 
+			&& !a.getObject().needsResolve() && hasHiddenAction(a.getObject())) {
+		return true;
+	}	
+	if(a.getActorFrom() != null && ProcessingUtils.isUnrealActor(a.getActorFrom()) 
+			&& hasHiddenAction(a.getActorFrom())) {
+		return true;
+	}
+	return false;
+}
 
 }

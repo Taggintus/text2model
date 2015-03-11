@@ -1,7 +1,11 @@
 package Nodes;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
+import Models.ProcessModel;
 
 public abstract class ProcessNode extends ProcessObject {
 	
@@ -65,5 +69,18 @@ public abstract class ProcessNode extends ProcessObject {
 	     */
 	    public boolean isCluster() {
 	        return false;
+	    }
+	    
+	    /*
+	     * returns all clusters in which this node is contained
+	     */
+	    public Set<Cluster> getParentClusters() {
+	        Set<Cluster> result = new HashSet<Cluster>(1);
+	        Cluster c;
+	        for (ProcessModel m: getContexts()) {
+	            c = m.getClusterForNode(this);
+	            if (c!=null) result.add(c);
+	        }
+	        return result;
 	    }
 }

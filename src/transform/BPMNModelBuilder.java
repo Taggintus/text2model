@@ -383,69 +383,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		return new IntermediateEvent();
 	}
 
-	/**
-	 * @param a
-	 * @return
-	 */
-	private boolean canBeTransformed(Action a) {
-		if(a.getObject() != null && !ProcessingUtils.isUnrealActor(a.getObject()) 
-				&& !a.getObject().needsResolve() && hasHiddenAction(a.getObject())) {
-			return true;
-		}	
-		if(a.getActorFrom() != null && ProcessingUtils.isUnrealActor(a.getActorFrom()) 
-				&& hasHiddenAction(a.getActorFrom())) {
-			return true;
-		}
-		return false;
-	}
-
-	//brauchen wir das?
-	private SequenceFlow removeNode(Action a) {
-		ProcessNode _node = toProcessNode(a);
-//		if(f_model.getPredecessors(_node).size() == 0) {
-//			//add a start node in front
-//			StartEvent _start = new StartEvent();
-//			f_model.addNode(_start);
-//			Cluster _lane = f_model.getClusterForNode(_node);
-//			if(_lane != null) {
-//				_lane.addProcessNode(_start);
-//			}
-//			SequenceFlow _sqf = new SequenceFlow(_start,_node);
-//			f_model.addFlow(_sqf);
-	//	}
-		return removeNode(_node);
-	}
-
-	/**
-	 * removes a node from the model but keeps the predecessor and successor connected
-	 * @param a
-	 * 
-	 */
-	private SequenceFlow removeNode(ProcessNode node) {
-		//remove this action and connect both nodes
-		
-		ProcessNode _pre = null;
-		ProcessNode _succ = null;
-		for(ProcessEdge edge:f_model.getEdges()) { //war vorher getEdges
-			if(edge.getTarget().equals(node)) {
-				_pre = edge.getSource();
-			}
-			if(edge.getSource().equals(node)) {
-				_succ = edge.getTarget();
-			}
-		}
-		f_model.removeNode(node);
-		if(_pre != null && _succ != null) {
-			SequenceFlow _sqf = new SequenceFlow(_pre,_succ);
-			f_model.addFlow(_sqf);
-			return _sqf;
-		}
-		return null;
-	}
-
-
-
-
 /**
  * 
  */
@@ -620,7 +557,6 @@ private void finishDanglingEnds() {
 		Task _result = new Task();		
 		String _name = createTaskText(a);
 		_result.setText(_name);
-		_result.pack();
 //		if(_result.getSize().height < 60) {
 //			_result.setSize(_result.getSize().width, 60);
 //		}
@@ -737,6 +673,33 @@ private void finishDanglingEnds() {
 	public void layoutModel(ProcessModel _result) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * @param f
+	 * @param gate
+	 */
+	protected void addToPrevalentLane(Flow f, Gateway gate) {
+		HashMap<Lane, Integer> _countMap = new HashMap<Lane, Integer>();
+		if(!(f.getSingleObject() instanceof DummyAction)) {
+			Lane _lane1 = getLaneForNode(toProcessNode(f.getSingleObject()));
+			_countMap.put(_lane1, 1);
+		}
+		for(Action a:f.getMultipleObjects()) {
+			if(!(a instanceof DummyAction)) {
+				Lane _lane = getLaneForNode(toProcessNode(a));
+				if(_countMap.containsKey(_lane)) {
+					_countMap.put(_lane,_countMap.get(_lane)+1);
+				}else {
+					_countMap.put(_lane, 1);
+				}
+			}
+		}
+		Lane _best = (Lane) SearchUtils.getMaxCountElement(_countMap);
+		//if best is null, there simply is no lane in the process!
+		if(_best != null) {
+			_best.addProcessNode(gate);
+		}
 	}
 
 }

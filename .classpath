@@ -6,12 +6,12 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Programmierung/dom4j-1.6.1/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/Stanford parser/stanford-parser-2010-08-16/stanford-parser.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/Stanford parser/stanford-parser-2010-08-16/stanford-parser-2010-08-16.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/jaxen-1.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/WordNet/jwnl14-rc2/lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/WordNet/jwnl14-rc2/lib/junit-4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/WordNet/jwnl14-rc2/lib/jwnl.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/dom4j-1.6.1/dom4j-1.6.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

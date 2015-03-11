@@ -22,7 +22,7 @@ import text.Text;
 import textModel.SentenceNode;
 import textModel.TextModel;
 import textModel.TextModelControler;
-import transform.ProcessModelBuilder;
+import transform.BPMNModelBuilder;
 import transform.TextAnalyzer;
 import transform.TextModelBuilder;
 import worldModel.Action;
@@ -53,7 +53,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 	private HashMap<FlowObject, Action> f_elementsMapInv = new HashMap<FlowObject, Action>();
 	
 	private TextToProcessListener f_listener = null;
-	private LaneSplitOffControler f_lsoControler;
+	//private LaneSplitOffControler f_lsoControler;
 	
 	/**
 	 * 
@@ -65,20 +65,20 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 	/**
 	 * 
 	 */
-	public TextToProcess(TextToProcessListener listener,TextModelControler tmControler, LaneSplitOffControler lsoControler) {
+	public TextToProcess(TextToProcessListener listener,TextModelControler tmControler) { //deleted argument: LaneSplitOffControler lsoControler
 		 f_listener = listener;
 		 f_textModelControler = tmControler;
-		 f_lsoControler = lsoControler;
+		 //f_lsoControler = lsoControler;
 	}
 	
-	public void setLaneSplitOffContoler(LaneSplitOffControler lsoControler) {
+	/*public void setLaneSplitOffContoler(LaneSplitOffControler lsoControler) {
 		f_lsoControler = lsoControler;
-	}
+	}*/
 	
 	 /**
      * (Re-)starts analyzing the loaded text and creates a process model
      */
-	public void analyzeText(boolean rebuildTextModel) {
+	public void analyzeText(boolean rebuildTextModel, boolean bpmn) {
 		f_analyzer.analyze(f_text);
         if(rebuildTextModel) {
 			TextModel _model = f_builder.createModel(f_analyzer);
@@ -86,17 +86,19 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 			if(f_textModelControler != null)
 				f_textModelControler.setModels(this, f_analyzer,f_builder,_model);
         }
-        ProcessModelBuilder _builder = new ProcessModelBuilder(this);
-        f_generatedModel = _builder.createProcessModel(f_analyzer.getWorld());
-        if(f_lsoControler != null)
-			f_lsoControler.setCommLinks(_builder.getCommLinks());
-        f_listener.modelGenerated(f_generatedModel);
+        if (bpmn) {
+        	BPMNModelBuilder _builder = new BPMNModelBuilder(this);
+        	f_generatedModel = (BPMNModel) _builder.createProcessModel(f_analyzer.getWorld());
+        	/*if(f_lsoControler != null)
+        		f_lsoControler.setCommLinks(_builder.getCommLinks());*/
+        	f_listener.modelGenerated(f_generatedModel);
+        }
 	}
 	
-	public void parseText(File file,ITextParsingStatusListener tpsl) {
+	public void parseText(File file,ITextParsingStatusListener tpsl, boolean bpmn) {
 		f_text = f_stanford.createText(file,tpsl);
 		f_analyzer.clear();
-		analyzeText(true);
+		analyzeText(true, bpmn);
 	}
 	
 	/**

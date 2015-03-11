@@ -308,7 +308,7 @@ public class TextModelControler extends ProcessUtils {
 		return null;
 	}
 
-	public void processEdgeAdded(ProcessEdge edge) {
+	public void processEdgeAdded(ProcessEdge edge, boolean bpmn) {
 		addReferenceToTextAnalyzer(edge);		
 		//only possibility, an edge was added by our reference repointing
 		if(f_edge != null) {
@@ -320,7 +320,7 @@ public class TextModelControler extends ProcessUtils {
 				}
 			}
 		}
-		f_processor.analyzeText(true); //rebuild process model
+		f_processor.analyzeText(true, bpmn); //rebuild process model
 	}
 
 	/**

@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /** * Entry point classes define <code>onModuleLoad()</code>. */
 public class Text2Model implements EntryPoint {
 
+	
+	
 /**  * Entry point method.  */  
 public void onModuleLoad() {
 

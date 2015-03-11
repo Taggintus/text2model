@@ -1,10 +1,13 @@
 package com.winfo.text2model.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -29,6 +32,26 @@ public class Gui extends Composite{
     
     int t = 1;
     int l = 1;
+    
+    private MessageServiceAsync messageService = 
+    		   GWT.create(MessageService.class);
+
+    		   private class MessageCallBack implements AsyncCallback<Message> {
+    		      @Override
+    		      public void onFailure(Throwable caught) {
+    		         /* server side error occured */
+    		         Window.alert("Unable to obtain server response: " 
+    		         + caught.getMessage());	
+    		      }
+    		      @Override
+    		      public void onSuccess(Message result) {
+    		          /* server returned result, show user the message */
+    		         Window.alert(result.getMessage());
+    		      }	   
+    		   }
+
+    
+    
     
 	public Gui() {
 		
@@ -110,9 +133,12 @@ public class Gui extends Composite{
 	    if (l==1) {ss="english";} else {ss="Deutsch";}
 	    if (t==1) {sl="BPMN";} else {sl="EPK";}
 	    
+        messageService.getMessage(textInput.getValue(),new MessageCallBack());
+	    
+	    
 	    text = new StringBuffer(text).reverse().toString();
 	    
-	    String s = "Ihre reversierte Eingabe: "+text +"\n"+"Gewaehlte Sprache: "+ss+"\n"+"Gewaehltes Model: "+sl;
+	    String s = "Gewaehlte Sprache: "+ss+"\n"+"Gewaehltes Model: "+sl;
 	    
 	    textOutput.setText(s);
 	    

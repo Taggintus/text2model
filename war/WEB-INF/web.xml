@@ -7,13 +7,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.winfo.text2model.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>messageServiceImpl</servlet-name>
+    <servlet-class>com.winfo.text2model.server.MessageServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/text2model/greet</url-pattern>
+    <servlet-name>messageServiceImpl</servlet-name>
+    <url-pattern>/text2model/message</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

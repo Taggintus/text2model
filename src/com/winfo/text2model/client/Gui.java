@@ -49,9 +49,6 @@ public class Gui extends Composite{
     		         Window.alert(result.getMessage());
     		      }	   
     		   }
-
-    
-    
     
 	public Gui() {
 		
@@ -83,12 +80,8 @@ public class Gui extends Composite{
 	    bpmnb.setChecked(true);
 	    engb.setChecked(true);
 	    
-	    // Associate the Main panel with the HTML host page.
-	   // RootPanel.get("text2model").add(mainPanel);
-	    
 	    // Move cursor focus to the input box.
 	    textInput.setFocus(true);
-
 	    
 	    // Listen for mouse events on the Add button.
 	    sendButton.addClickHandler(new ClickHandler() {
@@ -134,9 +127,6 @@ public class Gui extends Composite{
 	    if (t==1) {sl="BPMN";} else {sl="EPK";}
 	    
         messageService.getMessage(textInput.getValue(),new MessageCallBack());
-	    
-	    
-	    text = new StringBuffer(text).reverse().toString();
 	    
 	    String s = "Gewaehlte Sprache: "+ss+"\n"+"Gewaehltes Model: "+sl;
 	    

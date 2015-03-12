@@ -28,8 +28,8 @@ public class Gui extends Composite {
 	private Button sendButton = new Button("Send");
 	private RadioButton bpmnb = new RadioButton("modeltype", "BPMN");
 	private RadioButton epcb = new RadioButton("modeltype", "EPC");
-	private RadioButton engb = new RadioButton("language", "English");
-	private RadioButton gerb = new RadioButton("language", "Deutsch");
+//	private RadioButton engb = new RadioButton("language", "English");
+//	private RadioButton gerb = new RadioButton("language", "Deutsch");
 
 	// Initiate variables for type and language
 	int t = 1;
@@ -52,7 +52,7 @@ public class Gui extends Composite {
 			/* server returned result, show user the message */
 
 			textOutput.setText(result.getMessage());
-			Window.alert(result.getMessage());
+			//Window.alert(result.getMessage());
 		}
 	}
 
@@ -82,13 +82,13 @@ public class Gui extends Composite {
 		// Assemble Buttons
 		buttonPanel.add(bpmnb);
 		buttonPanel.add(epcb);
-		buttonPanel.add(engb);
-		buttonPanel.add(gerb);
+	//	buttonPanel.add(engb);
+	//	buttonPanel.add(gerb);
 		buttonPanel.add(sendButton);
 
 		// Set standard button
 		bpmnb.setChecked(true);
-		engb.setChecked(true);
+		//engb.setChecked(true);
 
 		// Move cursor focus to the input box.
 		textInput.setFocus(true);
@@ -123,12 +123,12 @@ public class Gui extends Composite {
 			t = 0;
 		}
 
-		// Save the language in l // 1 = english; 0 = german
+/*		// Save the language in l // 1 = english; 0 = german
 		if (engb.isChecked()) {
 			l = 1;
 		} else {
 			l = 0;
-		}
+		}*/
 
 		// do the call
 		messageService.getMessage(textInput.getValue(), new MessageCallBack());

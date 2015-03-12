@@ -10,7 +10,7 @@ public class MessageServiceImpl extends RemoteServiceServlet
    private static final long serialVersionUID = 1L;
 
    public Message getMessage(String input) {
-      String messageString = "Ihre Eingabe " + reverse(input) + "!";
+      String messageString = "Ihre reversierte Eingabe: " + reverse(input) + "!";
       Message message = new Message();
       message.setMessage(messageString);
       return message;

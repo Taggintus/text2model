@@ -46,6 +46,8 @@ public class Gui extends Composite{
     		      @Override
     		      public void onSuccess(Message result) {
     		          /* server returned result, show user the message */
+    		    	    
+    		  	    textOutput.setText(result.getMessage());
     		         Window.alert(result.getMessage());
     		      }	   
     		   }
@@ -68,6 +70,8 @@ public class Gui extends Composite{
 	    
 	    
 	    outputPanel.add(textOutput);
+	    textOutput.setReadOnly(true);
+	    
 	    
 	    // Assemble Buttons
 	    buttonPanel.add(bpmnb);
@@ -127,10 +131,6 @@ public class Gui extends Composite{
 	    if (t==1) {sl="BPMN";} else {sl="EPK";}
 	    
         messageService.getMessage(textInput.getValue(),new MessageCallBack());
-	    
-	    String s = "Gewaehlte Sprache: "+ss+"\n"+"Gewaehltes Model: "+sl;
-	    
-	    textOutput.setText(s);
 	    
 	 }
 	

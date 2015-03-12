@@ -79,6 +79,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
      * (Re-)starts analyzing the loaded text and creates a process model
      */
 	public void analyzeText(boolean rebuildTextModel, boolean bpmn) {
+		boolean f_bpmn = bpmn;
 		f_analyzer.analyze(f_text);
         if(rebuildTextModel) {
 			TextModel _model = f_builder.createModel(f_analyzer);
@@ -86,12 +87,13 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 			if(f_textModelControler != null)
 				f_textModelControler.setModels(this, f_analyzer,f_builder,_model);
         }
-        if (bpmn) {
+        if (f_bpmn) {
         	BPMNModelBuilder _builder = new BPMNModelBuilder(this);
         	f_generatedModel = (BPMNModel) _builder.createProcessModel(f_analyzer.getWorld());
         	/*if(f_lsoControler != null)
         		f_lsoControler.setCommLinks(_builder.getCommLinks());*/
-        	f_listener.modelGenerated(f_generatedModel);
+        	//f_listener.modelGenerated(f_generatedModel); //not needed???
+        	// TODO extract data from f_generatedModel for output
         }
 	}
 	

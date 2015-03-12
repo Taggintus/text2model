@@ -679,9 +679,8 @@ public class AnalyzedSentence {
 				Action _a = ElementsBuilder.createActionSyntax(f_sentence, f_fullSentence, _vp, active);
 				checkForSubSentences(_vp,dependencies,_a,false);
 				_result.add(_a);
-				if(_result == null) {
-					System.out.println("No active predicate was found!");
-				}
+
+				
 			}	
 		}else {
 			Tree _vpHead = SearchUtils.getFullPhraseTree("VP",_mainPredicate);	

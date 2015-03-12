@@ -36,7 +36,7 @@ public class DataObject extends Artifact implements Linkable {
     private void initializeProperties() {
         setProperty(PROP_COLLECTION, null);
         setProperty(PROP_DATA, DATA_NONE);
-        String[] data = { DATA_NONE, DATA_INPUT, DATA_OUTPUT };
+  //      String[] data = { DATA_NONE, DATA_INPUT, DATA_OUTPUT };
 
         setProperty(PROP_STATE, "");
     }

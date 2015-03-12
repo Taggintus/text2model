@@ -1,11 +1,9 @@
 package Nodes;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
@@ -172,8 +170,8 @@ public abstract class ProcessEdge extends ProcessObject {
             String pos = st.nextToken();
             try {
                 StringTokenizer st1 = new StringTokenizer(pos, ",");
-                int x = Integer.parseInt(st1.nextToken());
-                int y = Integer.parseInt(st1.nextToken());
+//                int x = Integer.parseInt(st1.nextToken());
+ //               int y = Integer.parseInt(st1.nextToken());
             } catch (Exception e) {
             }
         }

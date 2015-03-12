@@ -21,7 +21,6 @@ public class Message extends FlowObject{
     }
 
     protected void initializeProperties() {
-        int w=30; int h=20;
         setProperty(PROP_INITIATE, INITIATE_TRUE);
         //setPropertyEditor(PROP_INITIATE, new BooleanPropertyEditor());
     }

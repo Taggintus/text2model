@@ -38,7 +38,7 @@ public class CallActivity extends Activity implements Linkable {
     
     protected void initializeProperties() {
         setProperty(PROP_CALL_TYPE, CALL_PROCESS);
-        String[] type = { CALL_TASK, CALL_PROCESS };
+  //      String[] type = { CALL_TASK, CALL_PROCESS };
         //setPropertyEditor( PROP_CALL_TYPE, new ListSelectionPropertyEditor(type));
         //setProperty(PROP_REF,"");
        // setPropertyEditor(PROP_REF, new ReferencePropertyEditor(getReferenceRestrictions()));

@@ -41,7 +41,7 @@ public class ChoreographySubProcess extends Cluster {
         setProperty(PROP_LOWER_PARTICIPANTS, "Participant B");
         setProperty(PROP_ACTIVE_PARTICIPANTS, "Participant A");
         setProperty(PROP_LOOP_TYPE, LOOP_NONE);
-        String[] loop = { LOOP_NONE , LOOP_STANDARD, LOOP_MULTI_INSTANCE };
+ //       String[] loop = { LOOP_NONE , LOOP_STANDARD, LOOP_MULTI_INSTANCE };
 
         setProperty(PROP_UPPER_PARTICIPANTS_MULTI, "0");
         setProperty(PROP_LOWER_PARTICIPANTS_MULTI, "0");

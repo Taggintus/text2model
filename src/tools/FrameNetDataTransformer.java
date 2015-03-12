@@ -13,11 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 /**
  * removes the subCorpus elements in all framenet lu files 
@@ -28,7 +23,7 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 public class FrameNetDataTransformer {
 	
-	private static String fnFolder = "FrameNet/fndata-1.5/lu/";
+//	private static String fnFolder = "FrameNet/fndata-1.5/lu/";
 	private static String targetFolder = "FrameNet/fndata-1.5/lu-reduced/";
 	private static DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	private static DocumentBuilder db = null; 

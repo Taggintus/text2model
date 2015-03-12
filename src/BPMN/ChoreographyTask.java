@@ -35,7 +35,7 @@ public class ChoreographyTask extends ChoreographyActivity{
         setProperty(PROP_LOWER_PARTICIPANT, "Participant B");
         setProperty(PROP_ACTIVE_PARTICIPANT, "Participant A");
         setProperty(PROP_LOOP_TYPE, LOOP_NONE);
-        String[] loop = {LOOP_NONE, LOOP_STANDARD, LOOP_MULTI_INSTANCE};
+ //       String[] loop = {LOOP_NONE, LOOP_STANDARD, LOOP_MULTI_INSTANCE};
 
         setProperty(PROP_UPPER_PARTICIPANT_MULTI, "FALSE");
 

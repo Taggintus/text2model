@@ -9,12 +9,11 @@ package transform;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.Map;
+
 import java.util.Set;
 
 import BPMN.Association;
@@ -44,8 +43,7 @@ import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 import etc.Constants;
 import etc.TextToProcess;
-import processing.ProcessUtils;
-import processing.ProcessingUtils;
+
 import processing.WordNetWrapper;
 import processing.FrameNetWrapper.PhraseType;
 import tools.Configuration;
@@ -53,8 +51,7 @@ import worldModel.Action;
 import worldModel.Actor;
 import worldModel.ExtractedObject;
 import worldModel.Flow;
-import worldModel.Resource;
-import worldModel.SpecifiedElement;
+
 import worldModel.Specifier;
 import worldModel.WorldModel;
 import worldModel.Flow.FlowDirection;
@@ -71,7 +68,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	
 	//Nodes
 	private final boolean EVENTS_TO_LABELS = true;
-	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
+//	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
 	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
 	//Labeling
 	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));

@@ -302,7 +302,7 @@ public class SearchUtils {
 	 * @return
 	 */
 	private static int getIndex(List<Tree> fullSentence, List<Tree> list,int startIndex) {
-		for(int i=startIndex;i<fullSentence.size();i++) {
+		for(int i=startIndex;i<fullSentence.size();) {
 			for(int j=0;j<list.size();j++) {
 				if(!fullSentence.get(i+j).value().equals(list.get(j).value())) {
 					return getIndex(fullSentence,list,i+j+1);

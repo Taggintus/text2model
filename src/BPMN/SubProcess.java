@@ -51,7 +51,7 @@ public class SubProcess extends Cluster{
 
     private void initializeProperties() {
         setProperty(PROP_LOOP_TYPE, Activity.LOOP_NONE);
-        String[] type = { Activity.LOOP_NONE, Activity.LOOP_STANDARD, Activity.LOOP_MULTI_SEQUENCE, Activity.LOOP_MULTI_PARALLEL };
+//        String[] type = { Activity.LOOP_NONE, Activity.LOOP_STANDARD, Activity.LOOP_MULTI_SEQUENCE, Activity.LOOP_MULTI_PARALLEL };
         //setPropertyEditor(PROP_LOOP_TYPE, new ListSelectionPropertyEditor(type));
         
         setProperty(PROP_TRANSACTION, "FALSE");

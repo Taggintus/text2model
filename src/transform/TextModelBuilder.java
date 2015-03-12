@@ -10,7 +10,6 @@ package transform;
 
 import java.util.HashMap;
 
-import com.google.gwt.thirdparty.javascript.jscomp.graph.GraphColoring.Color;
 
 //import net.frapu.code.visualization.ProcessNode;
 import text.T2PSentence;

@@ -16,7 +16,7 @@ public class EventBasedGateway extends Gateway{
 
     public void initializeProperties() {
         setProperty(PROP_INSTANTIATE, TYPE_INSTANTIATE_NONE);
-        String[] inst = { TYPE_INSTANTIATE_NONE , TYPE_INSTANTIATE_EXCLUSIVE, TYPE_INSTANTIATE_PARALLEL };
+ //       String[] inst = { TYPE_INSTANTIATE_NONE , TYPE_INSTANTIATE_EXCLUSIVE, TYPE_INSTANTIATE_PARALLEL };
         //setPropertyEditor(PROP_INSTANTIATE, new ListSelectionPropertyEditor(inst));
     }
 

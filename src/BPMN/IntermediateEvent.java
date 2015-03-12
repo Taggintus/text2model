@@ -37,7 +37,7 @@ public class IntermediateEvent extends Event implements AttachedNode {
 
     protected void initializeProperties() {
         setProperty(PROP_EVENT_SUBTYPE, EVENT_SUBTYPE_CATCHING);
-        String[] subtype = { EVENT_SUBTYPE_CATCHING , EVENT_SUBTYPE_THROWING };
+//        String[] subtype = { EVENT_SUBTYPE_CATCHING , EVENT_SUBTYPE_THROWING };
         //setPropertyEditor(PROP_EVENT_SUBTYPE, new ListSelectionPropertyEditor(subtype));
         setProperty(PROP_NON_INTERRUPTING, EVENT_NON_INTERRUPTING_FALSE);
         //setPropertyEditor(PROP_NON_INTERRUPTING, new BooleanPropertyEditor());

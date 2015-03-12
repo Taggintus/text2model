@@ -17,34 +17,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Nodes.Cluster;
+
 //import net.frapu.code.visualization.Configuration;
 //import net.frapu.code.visualization.LayoutUtils;
 import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
-import processing.ProcessUtils;
-import BPMN.Association;
+
 import Models.BPMNModel;
 import Models.ProcessModel;
 import BPMN.DataObject;
 import BPMN.EndEvent;
-import BPMN.EventBasedGateway;
-import BPMN.ExclusiveGateway;
+
 import Nodes.FlowObject;
 import BPMN.Gateway;
-import BPMN.InclusiveGateway;
-import BPMN.IntermediateEvent;
+
 import BPMN.Lane;
 import BPMN.LaneableCluster;
-import BPMN.MessageFlow;
-import BPMN.ParallelGateway;
+
 import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
-import BPMN.TerminateEndEvent;
+
 import tools.Configuration;
-import transform.AnalyzedSentence;
+
 
 //import com.inubit.research.layouter.gridLayouter.GridLayouter;
 
@@ -56,13 +52,12 @@ import processing.FrameNetWrapper.PhraseType;
 import worldModel.Action;
 import worldModel.Actor;
 import worldModel.ExtractedObject;
-import worldModel.Flow;
+
 import worldModel.Resource;
 import worldModel.SpecifiedElement;
 import worldModel.Specifier;
 import worldModel.WorldModel;
-import worldModel.Flow.FlowDirection;
-import worldModel.Flow.FlowType;
+
 import worldModel.Specifier.SpecifierType;
 
 /**
@@ -74,15 +69,15 @@ public abstract class ProcessModelBuilder {
 	private Configuration f_config = Configuration.getInstance();
 	
 	//Nodes
-	private final boolean EVENTS_TO_LABELS = true;
+//	private final boolean EVENTS_TO_LABELS = true;
 	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
-	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
+//	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
 	//Labeling
-	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));
-	private final int MAX_NAME_DEPTH = 3;
+	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));//
+//	private final int MAX_NAME_DEPTH = 3;
 	//Model in General
-	private final boolean BUILD_BLACK_BOX_POOL_COMMUNICATION = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_BB_POOLS));
-	private final boolean BUILD_DATA_OBJECTS = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_DATA_OBJECTS));
+//	private final boolean BUILD_BLACK_BOX_POOL_COMMUNICATION = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_BB_POOLS));
+//	private final boolean BUILD_DATA_OBJECTS = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_DATA_OBJECTS));
 	
 	
 	
@@ -91,18 +86,18 @@ public abstract class ProcessModelBuilder {
 	private BPMNModel f_model = new BPMNModel("generated Model");
 	
 	
-	private HashMap<Actor, String> f_ActorToName = new HashMap<Actor, String>();
-	private HashMap<String, Lane> f_NameToPool = new HashMap<String, Lane>();		
+//	private HashMap<Actor, String> f_ActorToName = new HashMap<Actor, String>();
+//	private HashMap<String, Lane> f_NameToPool = new HashMap<String, Lane>();		
 	private HashMap<Action, FlowObject> f_elementsMap = new HashMap<Action, FlowObject>();
 	private HashMap<FlowObject, Action> f_elementsMap2 = new HashMap<FlowObject,Action>();
 	
-	private ArrayList<FlowObject> f_notAssigned = new ArrayList<FlowObject>();
-	private Lane f_lastPool = null;
-	private LaneableCluster f_mainPool;
+//	private ArrayList<FlowObject> f_notAssigned = new ArrayList<FlowObject>();
+//	private Lane f_lastPool = null;
+//	private LaneableCluster f_mainPool;
 	
 	//for black box pools
 	private HashMap<ProcessNode,String> f_CommLinks = new HashMap<ProcessNode, String>();
-	private HashMap<String, Pool> f_bbPoolcache = new HashMap<String, Pool>();
+//	private HashMap<String, Pool> f_bbPoolcache = new HashMap<String, Pool>();
 
 	
 	/**

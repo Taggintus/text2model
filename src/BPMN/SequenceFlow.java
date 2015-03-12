@@ -24,7 +24,7 @@ public class SequenceFlow extends ProcessEdge {
 
     private void initializeProperties() {
         setProperty(PROP_SEQUENCETYPE, "TYPE_STANDARD");
-        String[] type = { TYPE_STANDARD , TYPE_DEFAULT, TYPE_CONDITIONAL };
+  //      String[] type = { TYPE_STANDARD , TYPE_DEFAULT, TYPE_CONDITIONAL };
         //setPropertyEditor(PROP_SEQUENCETYPE, new ListSelectionPropertyEditor(type));
 
     }

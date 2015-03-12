@@ -75,6 +75,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 		f_lsoControler = lsoControler;
 	}*/
 	
+	
 	 /**
      * (Re-)starts analyzing the loaded text and creates a process model
      */

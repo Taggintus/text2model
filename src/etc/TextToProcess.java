@@ -58,6 +58,13 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 	/**
 	 * 
 	 */
+	public TextToProcess() {
+		
+	}
+	
+	/**
+	 * 
+	 */
 	public TextToProcess(TextToProcessListener listener) {
 		 f_listener = listener;		 
 	}
@@ -84,7 +91,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 		f_analyzer.analyze(f_text);
         if(rebuildTextModel) {
 			TextModel _model = f_builder.createModel(f_analyzer);
-			f_listener.textModelChanged(_model);			
+			//f_listener.textModelChanged(_model);			
 			if(f_textModelControler != null)
 				f_textModelControler.setModels(this, f_analyzer,f_builder,_model);
         }
@@ -98,8 +105,8 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
         }
 	}
 	
-	public void parseText(File file,ITextParsingStatusListener tpsl, boolean bpmn) {
-		f_text = f_stanford.createText(file,tpsl);
+	public void parseText(File file, boolean bpmn) {
+		f_text = f_stanford.createText(file);
 		f_analyzer.clear();
 		analyzeText(true, bpmn);
 	}
@@ -125,7 +132,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
     		SentenceNode n = (SentenceNode) o;
 	    	T2PSentence _sentence = f_text.getSentences().get(n.getIndex());
 	       	if(_sentence != null) {
-	       		f_listener.displayTree(_sentence.getTree());
+	       		//f_listener.displayTree(_sentence.getTree());
 	    		
 	    		Collection<TypedDependency> _list = _sentence.getGrammaticalStructure().typedDependenciesCollapsed();
 	    		
@@ -133,7 +140,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 	    		for(TypedDependency td:_list) {
 	    			_depText.append(td.toString());
 	    		}
-	    		f_listener.displayDependencies(_depText.toString());
+	    		//f_listener.displayDependencies(_depText.toString());
 	    		
 	    		f_analyzer.analyzeSentence(_sentence,1,true);
 	    	}
@@ -173,7 +180,7 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
 		if(_element instanceof Action) {
 			FlowObject _corr = f_elementsMap.get(_element);
 			if(_corr != null) {
-				f_listener.textElementClicked(_element,_corr);							
+				//f_listener.textElementClicked(_element,_corr);							
 			}
 		}
 	}

@@ -12,7 +12,6 @@ import java.util.zip.GZIPInputStream;
 
 import text.T2PSentence;
 import text.Text;
-
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.Word;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
@@ -42,7 +41,10 @@ public class T2PStanfordWrapper {
 		try {
 			ObjectInputStream in;
 		    InputStream is;
-		    URL u = T2PStanfordWrapper.class.getResource("/englishFactored.ser.gz");
+		    URL u = T2PStanfordWrapper.class.getResource("/englishFactored.ser.gz");//u is null after the operation
+		    if (u == null){
+		    	System.out.println("FU");
+		    }
 		    URLConnection uc = u.openConnection();
 		    is = uc.getInputStream();
 		    in = new ObjectInputStream(new GZIPInputStream(new BufferedInputStream(is)));   		

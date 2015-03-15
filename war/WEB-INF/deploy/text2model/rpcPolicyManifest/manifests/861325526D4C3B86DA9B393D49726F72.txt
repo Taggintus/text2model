@@ -1,0 +1,2 @@
+serviceClass: com.winfo.text2model.client.MessageService
+path: BDF7E73A57087B1A323089BF90A91285.gwt.rpc

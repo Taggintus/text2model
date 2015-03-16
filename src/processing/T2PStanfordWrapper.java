@@ -41,10 +41,7 @@ public class T2PStanfordWrapper {
 		try {
 			ObjectInputStream in;
 		    InputStream is;
-		    URL u = T2PStanfordWrapper.class.getResource("/englishFactored.ser.gz");//u is null after the operation
-		    if (u == null){
-		    	System.out.println("FU");
-		    }
+		    URL u = T2PStanfordWrapper.class.getResource("/englishFactored.ser.gz");
 		    URLConnection uc = u.openConnection();
 		    is = uc.getInputStream();
 		    in = new ObjectInputStream(new GZIPInputStream(new BufferedInputStream(is)));   		

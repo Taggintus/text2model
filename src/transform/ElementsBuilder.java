@@ -23,7 +23,6 @@ import worldModel.Resource;
 import worldModel.SpecifiedElement;
 import worldModel.Specifier;
 import worldModel.Specifier.SpecifierType;
-
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TypedDependency;

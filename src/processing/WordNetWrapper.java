@@ -133,8 +133,13 @@ public class WordNetWrapper {
 			if(ProcessingUtils.isPersonalPronoun(mainNoun)) {
 				return true;
 			}
-			System.out.println(fullNoun + " " + mainNoun);
-			System.out.println(f_dictionary.lookupIndexWord(POS.NOUN, fullNoun));
+			System.out.println(fullNoun + " " + mainNoun);//von hier
+			if (f_dictionary.lookupIndexWord(POS.NOUN, fullNoun) != null){
+				System.out.println("NICHT null");
+			}
+			if (f_dictionary.lookupIndexWord(POS.NOUN, fullNoun) == null){
+				System.out.println("null");
+			}//bis hier später löschen
 			IndexWord _idw = f_dictionary.lookupIndexWord(POS.NOUN, fullNoun);
 			if(_idw == null || (!_idw.getLemma().contains(mainNoun)))
 				_idw = f_dictionary.lookupIndexWord(POS.NOUN, mainNoun);

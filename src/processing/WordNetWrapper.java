@@ -134,6 +134,7 @@ public class WordNetWrapper {
 				return true;
 			}
 			System.out.println(fullNoun + " " + mainNoun);
+			System.out.println(f_dictionary.lookupIndexWord(POS.NOUN, fullNoun));
 			IndexWord _idw = f_dictionary.lookupIndexWord(POS.NOUN, fullNoun);
 			if(_idw == null || (!_idw.getLemma().contains(mainNoun)))
 				_idw = f_dictionary.lookupIndexWord(POS.NOUN, mainNoun);

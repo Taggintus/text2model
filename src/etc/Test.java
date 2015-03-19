@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import processing.WordNetWrapper;
+
 public class Test {
 	
 	private TextToProcess t2p = new TextToProcess();
@@ -14,8 +16,9 @@ public class Test {
 	}
 	
 	public void convert (File f, boolean bpmn){
-		   t2p.parseText(f, bpmn);
-		   //t2p.analyzeText(false, bpmn);
+		WordNetWrapper.init();
+		t2p.parseText(f, bpmn);
+		//t2p.analyzeText(false, bpmn);
 	   }
 	
 	public TextToProcess getT2P (){

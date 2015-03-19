@@ -8,29 +8,29 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Programmierung/dom4j-1.6.1/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="C:/Programmierung/jaxen-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Uni/git/text2model/Stanford Parser/stanford-parser-2010-08-16/stanford-parser.jar">
+	<classpathentry kind="lib" path="WordNet/jwnl14-rc2/lib/commons-logging.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="WordNet/jwnl14-rc2/lib/junit-4.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="WordNet/jwnl14-rc2/lib/jwnl.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Stanford Parser/stanford-parser-2010-08-16/stanford-parser-2010-08-16.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/Stanford%20Parser/stanford-parser-2010-08-16/stanford-parser-2010-08-16/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Uni/git/text2model/Stanford Parser/stanford-parser-2010-08-16/stanford-parser-2010-08-16.jar">
+	<classpathentry kind="lib" path="Stanford Parser/stanford-parser-2010-08-16/stanford-parser.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/Stanford%20Parser/stanford-parser-2010-08-16/stanford-parser-2010-08-16/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/lib/commons-logging.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/lib/junit-4.1.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/lib/jwnl.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Uni/git/text2model/WordNet/jwnl14-rc2/doc/javadoc/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>

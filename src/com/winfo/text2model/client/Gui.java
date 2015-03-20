@@ -3,9 +3,6 @@ package com.winfo.text2model.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -14,12 +11,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
+//import com.google.gwt.event.dom.client.KeyCodes;
+//import com.google.gwt.event.dom.client.KeyDownEvent;
+//import com.google.gwt.event.dom.client.KeyDownHandler;
 
 public class Gui extends Composite {
 
-	// Initiate Panels
+	// Initiate Panels & Areas
 	private HorizontalPanel mainPanel = new HorizontalPanel();
-	private HorizontalPanel outputPanel = new HorizontalPanel();
 	private VerticalPanel buttonPanel = new VerticalPanel();
 	private TextArea textInput = new TextArea();
 	private TextArea textOutput = new TextArea();
@@ -28,12 +27,12 @@ public class Gui extends Composite {
 	private Button sendButton = new Button("Send");
 	private RadioButton bpmnb = new RadioButton("modeltype", "BPMN");
 	private RadioButton epcb = new RadioButton("modeltype", "EPC");
-//	private RadioButton engb = new RadioButton("language", "English");
-//	private RadioButton gerb = new RadioButton("language", "Deutsch");
-
+	// private RadioButton engb = new RadioButton("language", "English");
+	// private RadioButton gerb = new RadioButton("language", "Deutsch");
+  
 	// Initiate variables for type and language
 	int t = 1;
-	int l = 1;
+	// int l = 1;
 
 	// Async part of the rpc
 	private MessageServiceAsync messageService = GWT
@@ -52,7 +51,7 @@ public class Gui extends Composite {
 			/* server returned result, show user the message */
 
 			textOutput.setText(result.getMessage());
-			//Window.alert(result.getMessage());
+			// Window.alert(result.getMessage());
 		}
 	}
 
@@ -60,35 +59,34 @@ public class Gui extends Composite {
 	@SuppressWarnings("deprecation")
 	public Gui() {
 
+		// Build main panel
 		initWidget(this.mainPanel);
+		mainPanel.setWidth("100%");
+		mainPanel.setBorderWidth(3);
 
-		// Assemble send panel.
+		// Build send area
 		mainPanel.add(textInput);
-		textInput.setCharacterWidth(100);
+		textInput.setWidth("98%");
 		textInput.setVisibleLines(25);
 
+		// Build button area.
 		mainPanel.add(buttonPanel);
 
-		// Assemble output panel.
-		mainPanel.add(outputPanel);
-		textOutput.setCharacterWidth(100);
+		// Build output panel.
+		mainPanel.add(textOutput);
+		textOutput.setWidth("98%");
 		textOutput.setVisibleLines(25);
-
-		outputPanel.add(textOutput);
-
-		// set Output readonly
 		textOutput.setReadOnly(true);
 
 		// Assemble Buttons
 		buttonPanel.add(bpmnb);
 		buttonPanel.add(epcb);
-	//	buttonPanel.add(engb);
-	//	buttonPanel.add(gerb);
+		// buttonPanel.add(engb);
+		// buttonPanel.add(gerb);
 		buttonPanel.add(sendButton);
 
-		// Set standard button
 		bpmnb.setChecked(true);
-		//engb.setChecked(true);
+		// engb.setChecked(true);
 
 		// Move cursor focus to the input box.
 		textInput.setFocus(true);
@@ -101,13 +99,11 @@ public class Gui extends Composite {
 		});
 
 		// Listen for keyboard events in the input box.
-		textInput.addKeyDownHandler(new KeyDownHandler() {
-			public void onKeyDown(KeyDownEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendtext();
-				}
-			}
-		});
+		/*
+		 * textInput.addKeyDownHandler(new KeyDownHandler() { public void
+		 * onKeyDown(KeyDownEvent event) { if (event.getNativeKeyCode() ==
+		 * KeyCodes.KEY_ENTER) { sendtext(); } } });
+		 */
 
 	}
 
@@ -123,12 +119,10 @@ public class Gui extends Composite {
 			t = 0;
 		}
 
-/*		// Save the language in l // 1 = english; 0 = german
-		if (engb.isChecked()) {
-			l = 1;
-		} else {
-			l = 0;
-		}*/
+		/*
+		 * // Save the language in l // 1 = english; 0 = german if
+		 * (engb.isChecked()) { l = 1; } else { l = 0; }
+		 */
 
 		// do the call
 		messageService.getMessage(textInput.getValue(), new MessageCallBack());

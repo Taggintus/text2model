@@ -102,7 +102,10 @@ private T2PStanfordWrapper f_stanford = new T2PStanfordWrapper();
         		f_lsoControler.setCommLinks(_builder.getCommLinks());*/
         	//f_listener.modelGenerated(f_generatedModel); //not needed???
         	// TODO extract data from f_generatedModel for output
+        	System.out.println(f_generatedModel.getFlowObjects());
+        	System.out.println(f_generatedModel.getFlows());
         }
+        System.out.println("END");
 	}
 	
 	public void parseText(File file, boolean bpmn) {

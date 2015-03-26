@@ -877,7 +877,7 @@ private void finishDanglingEnds() {
 			int _inC = 0;
 			int _outC = 0;
 			for(ProcessEdge e:f_model.getEdges()) {
-				while (e.getSource() != null){
+				if (e.getSource() != null){
 					if(e.getSource().equals(node)) {
 						_outC++;
 					}else if (e.getTarget().equals(node)) {

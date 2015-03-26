@@ -18,7 +18,6 @@ public class Test {
 	public void convert (File f, boolean bpmn){
 		WordNetWrapper.init();
 		t2p.parseText(f, bpmn);
-		//t2p.analyzeText(false, bpmn);
 	   }
 	
 	public TextToProcess getT2P (){

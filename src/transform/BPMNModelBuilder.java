@@ -800,7 +800,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	//BPMN exclusive
 	private void createActions(WorldModel world) {
 		for(Action a:world.getActions()) {
-			System.out.println(a);
 			FlowObject _obj;
 			if(!("if".equals(a.getMarker())) || a.isMarkerFromPP()) {
 				_obj = createTask(a);				
@@ -809,7 +808,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 				f_model.addFlowObject(_obj);
 				_obj.setText(getEventText(a)+" "+_obj.getText());				
 			}
-			System.out.println(_obj);
 			if(HIGHLIGHT_LOW_ENTROPY) {
 				if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()); //{
 				//	_obj.setBackground(Color.YELLOW);
@@ -817,7 +815,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			}
 			
 			f_elementsMap.put(a,_obj);
-			System.out.println(f_elementsMap);
 			if(a.getXcomp() != null)
 				f_elementsMap.put(a.getXcomp(), _obj);
 			f_elementsMap2.put(_obj, a);
@@ -880,11 +877,13 @@ private void finishDanglingEnds() {
 			int _inC = 0;
 			int _outC = 0;
 			for(ProcessEdge e:f_model.getEdges()) {
-				if(e.getSource().equals(node)) {
-					_outC++;
-				}else if (e.getTarget().equals(node)) {
-					_inC++;
-				}					
+				while (e.getSource() != null){
+					if(e.getSource().equals(node)) {
+						_outC++;
+					}else if (e.getTarget().equals(node)) {
+						_inC++;
+					}	
+				}
 			}
 			if((_outC == 0) || (node instanceof Gateway && _inC == 1 && _outC == 1)) {
 				//need to finish this one

@@ -1,0 +1,8 @@
+Die Modellierung von Geschäftsprozessen ist heutzutage ein wichtiges Werkzeug für die Umsetzung von organisatorischen Veränderungen und auch für die Anforderungsanalyse von Software geworden. Ein zentrales Problem hierbei ist es, dass alleine für die Modellierung des „as-is“-Modells bis zu 60% der Zeit des gesamten Prozesses benötigt werden. Oftmals liegen die Beschreibungen der Geschäftsprozesse bereits in umfangreichen Dokumenten vor, wobei deren Formatierung eine direkte Umsetzung nicht zulässt.(1)
+
+Das Ziel dieser Projektarbeit ist es, diese Geschäftsprozesse anhand von Beschreibungen in natürlichem Sprach-Text automatisiert in Ereignisgesteuerten-Prozess-Ketten (EPK) umzuwandeln. Dazu soll eine Web-Applikation implementiert werden. Ergänzend wird auch noch ein Webservice angeboten. Die Ausgabe soll zunächst im EPML-Format erfolgen, eine graphische Ausgabe als EPK ist geplant. Die Eingabesprache ist Englisch, wobei auch hier die Erweiterung auf die deutsche Sprache geplant ist. Um den natürlichen Sprach-Text aufzubereiten wird der gegebene „Stanford Syntax Parser“ in Verbindung mit 'WordNet' und 'FrameNet', später auch in Verbindung mit 'GermaNet', genutzt. Zuletzt wird noch ein Anaphora-Resolution-Algorithmus aus (1) implementiert, um Querverweise zwischen den einzelnen Sätzen herstellen zu können.
+
+
+
+
+(1) Fabian Friedrich, Jan Mendling, Frank Puhlmann; Process Model Generation from Natural Language Text; 2011

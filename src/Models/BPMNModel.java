@@ -30,11 +30,7 @@ public class BPMNModel extends ProcessModel {
     public BPMNModel() {
         super();
     }
-
-    /** 
-     * Creates a new BPMN ProcessEditorModel with a name.
-     * @param name
-     */
+    
     public BPMNModel(String name) {
         super(name);
     }

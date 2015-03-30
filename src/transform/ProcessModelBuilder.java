@@ -8,57 +8,28 @@
 package transform;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 
-//import net.frapu.code.visualization.Configuration;
-//import net.frapu.code.visualization.LayoutUtils;
-import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 
-import Models.BPMNModel;
 import Models.ProcessModel;
 import BPMN.DataObject;
-import BPMN.EndEvent;
-
-import Nodes.FlowObject;
-import BPMN.Gateway;
-
-import BPMN.Lane;
-import BPMN.LaneableCluster;
-
-import BPMN.Pool;
 import BPMN.SequenceFlow;
-import BPMN.StartEvent;
-import BPMN.Task;
 
-import tools.Configuration;
 
 
 //import com.inubit.research.layouter.gridLayouter.GridLayouter;
 
-import etc.Constants;
-import etc.TextToProcess;
-import processing.ProcessingUtils;
-import processing.WordNetWrapper;
-import processing.FrameNetWrapper.PhraseType;
 import worldModel.Action;
-import worldModel.Actor;
 import worldModel.ExtractedObject;
 
-import worldModel.Resource;
 import worldModel.SpecifiedElement;
 import worldModel.Specifier;
 import worldModel.WorldModel;
-
-import worldModel.Specifier.SpecifierType;
 
 /**
  * @author ff

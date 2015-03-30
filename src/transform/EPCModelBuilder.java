@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import tools.Configuration;
 import worldModel.Action;
 import worldModel.ExtractedObject;
 import worldModel.SpecifiedElement;
@@ -14,9 +15,23 @@ import BPMN.DataObject;
 import BPMN.SequenceFlow;
 import Models.ProcessModel;
 import Nodes.ProcessNode;
+import etc.Constants;
 import etc.TextToProcess;
 
 public class EPCModelBuilder extends ProcessModelBuilder {
+	
+private Configuration f_config = Configuration.getInstance();
+	
+	//Nodes
+	private final boolean EVENTS_TO_LABELS = true;
+	private final boolean REMOVE_LOW_ENTROPY_NODES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_REMOVE_LOW_ENT_NODES));
+	private final boolean HIGHLIGHT_LOW_ENTROPY = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_HIGHLIGHT_META_ACTIONS));
+	//Labeling
+	private final boolean ADD_UNKNOWN_PHRASETYPES = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_ADD_UNKNOWN_PT));
+	private final int MAX_NAME_DEPTH = 3;
+	//Model in General
+	private final boolean BUILD_BLACK_BOX_POOL_COMMUNICATION = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_BB_POOLS));
+	private final boolean BUILD_DATA_OBJECTS = "1".equals(f_config.getProperty(Constants.CONF_GENERATE_DATA_OBJECTS));
 	
 	private TextToProcess f_parent;
 

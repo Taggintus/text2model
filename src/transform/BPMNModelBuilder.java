@@ -35,6 +35,7 @@ import BPMN.Pool;
 import BPMN.SequenceFlow;
 import BPMN.StartEvent;
 import BPMN.Task;
+import BPMN.TerminateEndEvent;
 import BPMN.TimerIntermediateEvent;
 import Models.BPMNModel;
 import Models.ProcessModel;
@@ -44,6 +45,7 @@ import Nodes.ProcessEdge;
 import Nodes.ProcessNode;
 import etc.Constants;
 import etc.TextToProcess;
+import processing.ProcessUtils;
 import processing.ProcessingUtils;
 import processing.WordNetWrapper;
 import processing.FrameNetWrapper.PhraseType;
@@ -103,59 +105,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	
 	public BPMNModelBuilder(TextToProcess parent) {
 		f_parent = parent;
-	}
-	
-	@Override
-	protected void put(HashMap<Action, List<String>> os, Action a, String dataObj) {
-		if(!os.containsKey(a)) {
-			LinkedList<String> _list = new LinkedList<String>();
-			os.put(a, _list);
-		}
-		os.get(a).add(dataObj);		
-	}
-	
-	@Override
-	protected Set<String> getDataObjectCandidates(SpecifiedElement ob) {
-		if(ob == null) {
-			return new HashSet<String>(0);
-		}		
-		HashSet<String> _result = new HashSet<String>();
-		if(ob instanceof Resource) {
-			if(((Resource) ob).needsResolve()) {
-				_result.addAll(getDataObjectCandidates(((ExtractedObject)ob).getReference()));
-				return _result;
-			}else {
-				String _name = getName((ExtractedObject)ob,false, 1, true);
-				if(WordNetWrapper.canBeDataObject(_name,ob.getName())) {
-					_result.add(_name);		
-					return _result;
-				}
-			}
-		}else if(ob instanceof Actor) {
-			Actor _actor = (Actor) ob;
-			if(_actor.isUnreal()) {
-				String _name = getName(_actor,false, 1, true);
-				if(WordNetWrapper.canBeDataObject(_name,_actor.getName())) {
-					_result.add(_name);
-					return _result;
-				}
-			}else if(_actor.needsResolve()) {
-				_result.addAll(getDataObjectCandidates(_actor.getReference()));
-				return _result;
-			}
-		}else if(ob instanceof Action) {
-			Action _action = (Action) ob;
-			_result.addAll(getDataObjectCandidates(_action.getActorFrom()));
-			_result.addAll(getDataObjectCandidates(_action.getObject()));
-			_result.addAll(getDataObjectCandidates(_action.getXcomp()));
-		}
-		//checking specifiers
-		for(Specifier spec:ob.getSpecifiers()) {
-			if(spec.getObject() != null && !"of".equals(spec.getHeadWord())) {
-				_result.addAll(getDataObjectCandidates(spec.getObject()));
-			}
-		}
-		return _result;
 	}
 	
 	@Override
@@ -235,7 +184,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	}
 
 
-	@Override
 	public DataObject createDataObject(Action targetAc,String doName,boolean arriving) {
 		ProcessNode _target = f_elementsMap.get(targetAc);
 		Lane _lane = getLaneForNode(_target);
@@ -261,34 +209,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	}
 	
 	@Override
-	protected Specifier containedReceiver(List<Specifier> specifiers) {
-		return containsFrameElement(specifiers,ListUtils.getList("Donor","Source"));
-	}
-	
-	@Override
-	protected Specifier containedSender(List<Specifier> specifiers) {
-		return containsFrameElement(specifiers,ListUtils.getList("Addressee","Recipient"));
-	}
-	
-	/**
-	 * @param specifiers
-	 * @param list
-	 * @return
-	 */
-	private Specifier containsFrameElement(List<Specifier> specifiers,
-			List<String> list) {
-		for(Specifier sp:specifiers) {
-			if(sp.getFrameElement() != null) {
-				if(list.contains(sp.getFrameElement().getName())) {
-					return sp;
-				}
-			}
-		}
-		return null;
-		
-	}
-	
-	@Override
 	protected void processMetaActivities(WorldModel world) {
 		for(Action a:world.getActions()) {
 			if(a.getActorFrom() != null && a.getActorFrom().isMetaActor()) {					
@@ -307,11 +227,11 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 						removeNode(a);
 						if(a.getName().equals("terminate") && _succs.size()==1) {
 							EndEvent _ee = (EndEvent) _succs.get(0);
-							/*try {
-								ProcessUtils.refactorNode(f_model, _ee, TerminateEndEvent.class);
-							}catch(Exception ex) {
-								ex.printStackTrace();
-							}*/
+//							try {
+//								ProcessUtils.refactorNode(f_model, _ee, TerminateEndEvent.class);
+//							}catch(Exception ex) {
+//								ex.printStackTrace();
+//							}
 						}
 //					}					
 				}else if(WordNetWrapper.isVerbOfType(a.getName(),"start")) {
@@ -332,67 +252,11 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			if(a instanceof DummyAction || a.getTransient()) {
 				removeNode(a);
 			}else {
-				if(f_elementsMap.get(a).getText().equals("Dummy")) { //error occurrs here
+				if(f_elementsMap.get(a).getText().equals("Dummy")) {
 					removeNode(a);
 				}
 			}
 		}
-	}
-
-	@Override
-	protected String getEventText(Action a) {
-		StringBuilder _b = new StringBuilder();
-		boolean _actorPlural = false;
-		if(a.getActorFrom() != null) {
-			_b.append(getName(a.getActorFrom(),true));
-			_b.append(' ');
-			_actorPlural = a.getActorFrom().getName().endsWith("s");
-		}	
-		if(!WordNetWrapper.isWeakVerb(a.getName()) || (a.getCop() != null || 
-				a.getObject() != null || a.getSpecifiers().size()>0 || a.isNegated())) {
-			boolean _auxIsDo = (a.getAux() != null && WordNetWrapper.getBaseForm(a.getAux()).equals("do"));
-			if(a.isNegated() && (!WordNetWrapper.isWeakVerb(a.getName())||_auxIsDo)) {
-				if(a.getAux() != null && !WordNetWrapper.getBaseForm(a.getAux()).equals("be")) {
-					_b.append(a.getAux());
-				}else {
-					_b.append(_actorPlural ? "do" : ProcessingUtils.get3rdPsing("do"));	
-				}
-				_b.append(" not ");
-				_b.append(WordNetWrapper.getBaseForm(a.getName()));
-				_b.append(' ');
-			}else {
-				if(a.getAux() != null) {
-					if(a.getActorFrom() != null && !a.getActorFrom().getPassive()) {
-						_b.append(a.getAux());
-						_b.append(' ');
-						_b.append(a.getName());
-					}else{
-						_b.append(ProcessingUtils.get3rdPsing(a.getName()));
-					}
-					
-				}else {
-					_b.append(_actorPlural ? WordNetWrapper.getBaseForm(a.getName()) : ProcessingUtils.get3rdPsing(a.getName()));
-				}		
-				if(a.isNegated()) {
-					_b.append(" not ");
-				}
-			}
-			_b.append(' ');
-		}
-		
-		
-		if(a.getCop() != null) {
-			_b.append(a.getCop());
-		}else {
-			if(a.getObject() != null) {
-				_b.append(getName(a.getObject(),true));
-			}else {
-				if(a.getSpecifiers().size() > 0) {
-					_b.append(a.getSpecifiers().get(0).getPhrase());
-				}
-			}
-		}
-		return _b.toString();
 	}
 	
 	@Override
@@ -431,6 +295,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		}
 	}
 	
+	@Override
 	protected SequenceFlow removeNode(Action a) {
 		ProcessNode _node = toProcessNode(a);
 //		if(f_model.getPredecessors(_node).size() == 0) {
@@ -452,6 +317,7 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	 * @param a
 	 * 
 	 */
+	@Override
 	public SequenceFlow removeNode(ProcessNode node) {
 		//remove this action and connect both nodes
 		
@@ -472,27 +338,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			return _sqf;
 		}
 		return null;
-	}
-	
-	@Override
-	protected boolean hasHiddenAction(ExtractedObject obj) {
-		boolean _canBeGerund = false;
-		for(Specifier spec:obj.getSpecifiers(SpecifierType.PP)) {
-			if(spec.getName().startsWith("of")) {
-				_canBeGerund = true;
-			}
-		}
-		if(!_canBeGerund) {
-			return false;
-		}
-		if(obj != null) {
-			for(String s:obj.getName().split(" ")) {
-				if(WordNetWrapper.deriveVerb(s) != null) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 	
 	@Override
@@ -588,56 +433,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 		return _b.toString().replaceAll("  ", " ");
 	}
 	
-	private int getXCompPos(Action xcomp) {
-		if(xcomp == null) {
-			return -1;
-		}
-		return xcomp.getWordIndex();
-	}
-	
-	/**
-	 * @param a
-	 * @param _b
-	 */
-	private void addMod(Action a, StringBuilder _b) {
-		if(a.getMod() != null){
-			_b.append(' ');
-			_b.append(a.getMod());
-		}
-	}
-
-	private void addSpecifiers(Action a, StringBuilder _b, int limit,boolean smaller) {
-		if(a.getObject() == null) {
-			List<Specifier> _specs = a.getSpecifiers(SpecifierType.PP);
-			if(a.getXcomp() == null) {
-				_specs.addAll(a.getSpecifiers(SpecifierType.SBAR));
-			}
-			Collections.sort(_specs);			
-			boolean _foundSth = false;
-			for(Specifier spec:_specs) {
-				if(spec.getType() == SpecifierType.SBAR && _foundSth == true) {
-					break;
-				}
-				if(spec.getWordIndex() > a.getWordIndex()) {
-					boolean _smaller = spec.getWordIndex() < limit;
-					if(!(_smaller^smaller)) {
-						if(considerPhrase(spec)){
-							_foundSth = true;
-							_b.append(' ');
-							if(spec.getObject() != null) {
-								_b.append(spec.getHeadWord());
-								_b.append(' ');
-								_b.append(getName(spec.getObject(),true));
-							}else {
-								_b.append(spec.getName());
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	@Override
 	protected boolean considerPhrase(Specifier spec) {
 		if(spec.getPhraseType() == PhraseType.PERIPHERAL || spec.getPhraseType() == PhraseType.EXTRA_THEMATIC) {
@@ -648,43 +443,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 			}
 		}
 		return true; //always accept core and genetive
-	}
-	
-	private void addXComp(Action a, StringBuilder _b,boolean needsAux) {
-		if(a.getXcomp() != null) {
-			if(needsAux) {
-				if(a.getXcomp().getAux() != null) {
-					_b.append(' ');
-					_b.append(a.getXcomp().getAux());
-					_b.append(' ');
-				}else {
-					_b.append(" to ");
-				}
-			}
-			_b.append(createTaskText( a.getXcomp()));
-		}		
-	}
-
-	/**
-	 * @param actorFrom
-	 * @return
-	 */
-	private String transformToAction(ExtractedObject obj) {
-		StringBuilder _b = new StringBuilder();
-		for(String s:obj.getName().split(" ")) {
-			String _der = WordNetWrapper.deriveVerb(s);
-			if(_der != null) {
-				_b.append(_der);
-				break;
-			}
-		}
-		for(Specifier spec:obj.getSpecifiers(SpecifierType.PP)) {
-			if(spec.getPhrase().startsWith("of") && spec.getObject() != null) {
-				_b.append(' ');
-				_b.append(getName(spec.getObject(),true));
-			}
-		}
-		return _b.toString();
 	}
 	
 	@Override
@@ -797,7 +555,6 @@ public class BPMNModelBuilder extends ProcessModelBuilder {
 	}
 
 
-	//BPMN exclusive
 	private void createActions(WorldModel world) {
 		for(Action a:world.getActions()) {
 			FlowObject _obj;
@@ -964,19 +721,6 @@ private void finishDanglingEnds() {
 			}
 		}
 	}
-
-	@Override
-	protected void addSpecifier(int level, StringBuilder _b, Specifier s,boolean compact) {
-		_b.append(' ');
-		if(s.getObject() != null) {
-			_b.append(s.getHeadWord());
-			_b.append(' ');
-			_b.append(getName(s.getObject(),true,level+1,compact));
-				
-		}else {
-			_b.append(s.getName());
-		}
-	}
 	
 	private FlowObject toProcessNode(Action a) {
 		
@@ -1015,22 +759,6 @@ private void finishDanglingEnds() {
 		}
 		return null;
 	}
-	
-	/**
-	 * @param a
-	 * @return
-	 */
-	private boolean canBeTransformed(Action a) {
-		if(a.getObject() != null && !ProcessingUtils.isUnrealActor(a.getObject()) 
-				&& !a.getObject().needsResolve() && hasHiddenAction(a.getObject())) {
-			return true;
-		}	
-		if(a.getActorFrom() != null && ProcessingUtils.isUnrealActor(a.getActorFrom()) 
-				&& hasHiddenAction(a.getActorFrom())) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * @param f
@@ -1062,7 +790,6 @@ private void finishDanglingEnds() {
 	}
 
 	
-	//brauchen wir das? 
 	/**
 	 * @param a
 	 * @return
@@ -1071,9 +798,6 @@ private void finishDanglingEnds() {
 		Task _result = new Task();		
 		String _name = createTaskText(a);
 		_result.setText(_name);
-//		if(_result.getSize().height < 60) {
-//			_result.setSize(_result.getSize().width, 60);
-//		}
 		f_model.addFlowObject(_result);
 		return _result;
 	}
@@ -1111,15 +835,6 @@ private void finishDanglingEnds() {
 		}
 		return null;
 	}
-
-	/*public void layoutModel(BPMNModel _result) {
-		GridLayouter _layouter = new GridLayouter(Configuration.getProperties());
-		try {
-			_layouter.layoutModel(LayoutUtils.getAdapter(_result));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
 
 
 	/**
